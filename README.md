@@ -1,4 +1,4 @@
-[[/wamplay.png|align=center]]
+![Logo](https://raw.github.com/blopker/WAMPlay/master/wamplay.png)
 
 About
 -----
