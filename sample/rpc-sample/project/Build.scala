@@ -4,19 +4,19 @@ import play.Project._
 
 object ApplicationBuild extends Build {
 
-  val appName         = "WAMPlay"
+  val appName         = "rpc-sample"
   val appVersion      = "1.0-SNAPSHOT"
 
   val appDependencies = Seq(
     // Add your project dependencies here,
     javaCore,
     javaJdbc,
-    javaEbean
+    javaEbean,
+    "wamplay" % "wamplay_2.10" % "1.0-SNAPSHOT"
   )
 
   val main = play.Project(appName, appVersion, appDependencies).settings(
-    // hack to suppress javadoc error, see: https://play.lighthouseapp.com/projects/82401/tickets/898-javadoc-error-invalid-flag-g-when-publishing-new-module-local#ticket-898-7
-    publishArtifact in(Compile, packageDoc) := false
+    resolvers += "Local Play Repository" at "file://Users/ninj0x/bin/play/repository/local"
   )
 
 }

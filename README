@@ -1,4 +1,7 @@
-This is your new Play 2.1 application
-=====================================
+[[/wamplay.png|align=center]]
 
-This file will be packaged with your application, when using `play dist`.
+About
+-----
+This is a WAMP implementation for the Play! Framework. Use it to add RPC and Pub/Sub websocket functionality to your site!
+
+**This is currently in alpha state, it does not work yet**
