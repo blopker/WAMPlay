@@ -1,9 +1,9 @@
 package controllers.messageHandlers;
 
-import models.WAMPClient;
+import models.WAMPlayClient;
 
 import org.codehaus.jackson.JsonNode;
 
 public interface MessageHandler {
-	public void process(JsonNode message, WAMPClient client);
+	public void process(JsonNode message, WAMPlayClient client);
 }

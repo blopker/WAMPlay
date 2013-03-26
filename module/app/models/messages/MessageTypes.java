@@ -13,16 +13,16 @@ public enum MessageTypes {
 	PUBLISH(7, PublishHandler.class),
 	EVENT(8, null);
 	
-	private final int typeID;
+	private final int typeCode;
 	private final Class<? extends MessageHandler> messageHandlerClass;
 	
-	private MessageTypes(int typeID, Class<? extends MessageHandler> messageHandlerClass) {
-		this.typeID = typeID;
+	private MessageTypes(int typeCode, Class<? extends MessageHandler> messageHandlerClass) {
+		this.typeCode = typeCode;
 		this.messageHandlerClass = messageHandlerClass;
 	}
 	
-	public int getTypeID() {
-		return typeID;
+	public int getTypeCode() {
+		return typeCode;
 	}
 	
 	public Class<? extends MessageHandler> getMessageHandlerClass() {
@@ -31,7 +31,7 @@ public enum MessageTypes {
 	
 	public static MessageTypes getType(int type) throws EnumConstantNotPresentException{
 		for (MessageTypes messageType : MessageTypes.values()) {
-			if (messageType.getTypeID() == type) {
+			if (messageType.getTypeCode() == type) {
 				return messageType;
 			}
 		}

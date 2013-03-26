@@ -20,7 +20,7 @@ public class Welcome implements Message{
 	@Override
 	public List<Object> toList() {
 		List<Object> res = new ArrayList<Object>();
-		res.add(MessageTypes.WELCOME.getTypeID());
+		res.add(getType().getTypeCode());
 		res.add(this.clientID);
 		res.add(WAMPlayServer.PROTOCOL_VERSION);
 		res.add(WAMPlayServer.VERSION);

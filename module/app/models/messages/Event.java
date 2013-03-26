@@ -5,8 +5,6 @@ import java.util.List;
 
 import org.codehaus.jackson.JsonNode;
 
-import controllers.WAMPlayServer;
-
 public class Event implements Message{
 	final Object event;
 	final String topic;
@@ -16,7 +14,7 @@ public class Event implements Message{
 		this.topic = topic;
 		this.event = event;
 		
-		res.add(getType());
+		res.add(getType().getTypeCode());
 		res.add(topic);
 		res.add(event);
 	}	

@@ -2,6 +2,9 @@ package test;
 
 import static org.fest.assertions.Assertions.assertThat;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.codehaus.jackson.JsonNode;
 import org.junit.After;
 import org.junit.Before;
@@ -71,13 +74,25 @@ public class PubSubTest {
 		String topic = "http://example.com/simple";
 		
 		subscribe(topic, client);
-		publish(topic, client2);
+		subscribe(topic, client2);
 		
+		publish(topic, client2, true);		
+		assertThat(client2.lastSent.toString()).doesNotContain("Hello, WAMP!");
 		assertThat(client.lastSent.toString()).contains("Hello, WAMP!");
+		
+		publish(topic, client2, false);
+		assertThat(client2.lastSent.toString()).contains("Hello, WAMP!");
 	}
 
-	private void publish(String topic, TestClient client) {
-		JsonNode req = Json.parse("[7, \"" + topic + "\", \"Hello, WAMP!\"]");
+	private void publish(String topic, TestClient client, boolean excludeMe) {
+		List<Object> res = new ArrayList<Object>();
+		res.add(7);
+		res.add(topic);
+		res.add("Hello, WAMP!");
+		if (excludeMe) {
+			res.add(true);
+		}
+		JsonNode req = Json.toJson(res);
 		WAMPlayServer.handleRequest(req, client);
 	}
 }

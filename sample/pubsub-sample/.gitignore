@@ -1,7 +1,6 @@
 logs
 project/project
 project/target
-.target
 target
 tmp
 .history
@@ -14,4 +13,3 @@ dist
 /.project
 /RUNNING_PID
 /.settings
-*.class

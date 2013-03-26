@@ -1,14 +1,14 @@
 package test;
 
+import models.WAMPlayClient;
+import models.messages.Message;
+
 import org.codehaus.jackson.JsonNode;
 
 import play.libs.Json;
-import play.mvc.WebSocket.In;
 import play.mvc.WebSocket.Out;
-import models.WAMPClient;
-import models.messages.Message;
 
-public class TestClient extends WAMPClient {
+public class TestClient extends WAMPlayClient {
 	public JsonNode lastSent = Json.parse("[]");
 	
 	public TestClient(Out<JsonNode> out) {
@@ -19,5 +19,4 @@ public class TestClient extends WAMPClient {
 		JsonNode node = Json.toJson(message.toList());
 		lastSent = node;
 	}
-
 }

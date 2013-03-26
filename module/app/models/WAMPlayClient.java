@@ -15,14 +15,14 @@ import play.Logger.ALogger;
 import play.libs.Json;
 import play.mvc.WebSocket;
 
-public class WAMPClient {
-	static ALogger log = Logger.of(WAMPClient.class);
+public class WAMPlayClient {
+	static ALogger log = Logger.of(WAMPlayClient.class);
 	final Set<String> topics;
 	final Map<String, String> prefixes;
 	final String ID;
 	final WebSocket.Out<JsonNode> out;
 
-	public WAMPClient(WebSocket.Out<JsonNode> out) {
+	public WAMPlayClient(WebSocket.Out<JsonNode> out) {
 		this.out = out;
 		topics = new HashSet<String>();
 		prefixes = new HashMap<String, String>();
