@@ -1,7 +1,5 @@
 package controllers;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
@@ -23,6 +21,7 @@ import controllers.messageHandlers.MessageHandlerFactory;
 public class WAMPlayServer extends Controller {
 	public static String VERSION = "WAMPlay/0.0.1";
 	public static int PROTOCOL_VERSION = 1;
+	public static WAMPlayClient lastClient;
 
 	static ALogger log = Logger.of(WAMPlayServer.class);
 	static ConcurrentMap<String, WAMPlayClient> clients = new ConcurrentHashMap<String, WAMPlayClient>();
@@ -40,29 +39,31 @@ public class WAMPlayServer extends Controller {
 				final WAMPlayClient client = new WAMPlayClient(out);
 				WAMPlayServer.addClient(client);
 
-				in.onClose(new Callback0() {
+				if (in != null) { // check if testing.
+					in.onClose(new Callback0() {
 
-					@Override
-					public void invoke() throws Throwable {
-						WAMPlayServer.removeClient(client);
-					}
-				});
+						@Override
+						public void invoke() throws Throwable {
+							WAMPlayServer.removeClient(client);
+						}
+					});
 
-				in.onMessage(new Callback<JsonNode>() {
+					in.onMessage(new Callback<JsonNode>() {
 
-					@Override
-					public void invoke(JsonNode request) throws Throwable {
-						handleRequest(request, client);
-					}
-				});
-
+						@Override
+						public void invoke(JsonNode request) throws Throwable {
+							handleRequest(request, client);
+						}
+					});
+				}
 				client.send(new Welcome(client.getID()));
+				lastClient = client;
 			}
 		};
 	}
 
 	public static void handleRequest(JsonNode request, WAMPlayClient client) {
-		
+
 		MessageTypes type;
 		try {
 			type = MessageTypes.getType(request.get(0).asInt());
@@ -75,14 +76,12 @@ public class WAMPlayServer extends Controller {
 		handler.process(request, client);
 	}
 
-	// For testing
-	public static void addClient(WAMPlayClient client) {
+	private static void addClient(WAMPlayClient client) {
 		clients.put(client.getID(), client);
 		log.debug("WAMPClient: " + client.getID() + " connected.");
 	}
 
-	// For testing
-	public static void removeClient(WAMPlayClient client) {
+	private static void removeClient(WAMPlayClient client) {
 		clients.remove(client.getID());
 		log.debug("WAMPClient: " + client.getID() + " disconnected.");
 	}

@@ -21,6 +21,7 @@ public class WAMPlayClient {
 	final Map<String, String> prefixes;
 	final String ID;
 	final WebSocket.Out<JsonNode> out;
+	Message lastSent;
 
 	public WAMPlayClient(WebSocket.Out<JsonNode> out) {
 		this.out = out;
@@ -30,6 +31,10 @@ public class WAMPlayClient {
 	}
 
 	public void send(Message message) {
+		if (out == null) { // Just for testing.
+			lastSent = message;
+			return;
+		}
 		JsonNode node = Json.toJson(message.toList());
 		out.write(node);
 	}
@@ -63,6 +68,12 @@ public class WAMPlayClient {
 	}
 	
 	public void kill() {
-		out.close();
+		if (out != null) {
+			out.close();	
+		}
+	}
+	
+	public Message testLastSent() {
+		return lastSent;
 	}
 }

@@ -5,6 +5,8 @@ import static org.fest.assertions.Assertions.assertThat;
 import java.util.ArrayList;
 import java.util.List;
 
+import models.WAMPlayClient;
+
 import org.codehaus.jackson.JsonNode;
 import org.junit.After;
 import org.junit.Before;
@@ -14,21 +16,19 @@ import play.libs.Json;
 import controllers.WAMPlayServer;
 
 public class PubSubTest {
-	TestClient client;
-	TestClient client2;
+	WAMPlayClient client;
+	WAMPlayClient client2;
 
 	@Before
 	public void setUp() {
-		client = new TestClient(null);
-		client2 = new TestClient(null);
-		WAMPlayServer.addClient(client);
-		WAMPlayServer.addClient(client2);
+		client = TestClientFactory.get();
+		client2 = TestClientFactory.get();
 	}
 
 	@After
 	public void tearDown() {
-		WAMPlayServer.removeClient(client);
-		WAMPlayServer.removeClient(client2);
+		client.kill();
+		client2.kill();
 	}
 
 	@Test
@@ -43,7 +43,7 @@ public class PubSubTest {
 				.isFalse();
 	}
 
-	private void subscribe(String topic, TestClient client) {
+	private void subscribe(String topic, WAMPlayClient client) {
 		JsonNode req = Json.parse("[5, \"" + topic + "\"]");
 		WAMPlayServer.handleRequest(req, client);
 	}
@@ -64,7 +64,7 @@ public class PubSubTest {
 		assertThat(client2.isSubscribed(topic)).isFalse();
 	}
 
-	private void unsubscribe(String topic, TestClient client) {
+	private void unsubscribe(String topic, WAMPlayClient client) {
 		JsonNode req = Json.parse("[6, \"" + topic + "\"]");
 		WAMPlayServer.handleRequest(req, client);
 	}
@@ -77,14 +77,14 @@ public class PubSubTest {
 		subscribe(topic, client2);
 		
 		publish(topic, client2, true);		
-		assertThat(client2.lastSent.toString()).doesNotContain("Hello, WAMP!");
-		assertThat(client.lastSent.toString()).contains("Hello, WAMP!");
+		assertThat(client2.testLastSent().toList().toString()).doesNotContain("Hello, WAMP!");
+		assertThat(client.testLastSent().toList().toString()).contains("Hello, WAMP!");
 		
 		publish(topic, client2, false);
-		assertThat(client2.lastSent.toString()).contains("Hello, WAMP!");
+		assertThat(client2.testLastSent().toList().toString()).contains("Hello, WAMP!");
 	}
 
-	private void publish(String topic, TestClient client, boolean excludeMe) {
+	private void publish(String topic, WAMPlayClient client, boolean excludeMe) {
 		List<Object> res = new ArrayList<Object>();
 		res.add(7);
 		res.add(topic);
