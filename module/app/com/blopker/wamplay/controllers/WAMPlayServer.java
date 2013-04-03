@@ -1,11 +1,9 @@
-package controllers;
+package com.blopker.wamplay.controllers;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
-
-import models.WAMPlayClient;
-import models.messages.MessageTypes;
-import models.messages.Welcome;
 
 import org.codehaus.jackson.JsonNode;
 
@@ -15,8 +13,14 @@ import play.libs.F.Callback;
 import play.libs.F.Callback0;
 import play.mvc.Controller;
 import play.mvc.WebSocket;
-import controllers.messageHandlers.MessageHandler;
-import controllers.messageHandlers.MessageHandlerFactory;
+
+import com.blopker.wamplay.callbacks.PubSubCallback;
+import com.blopker.wamplay.controllers.messageHandlers.MessageHandler;
+import com.blopker.wamplay.controllers.messageHandlers.MessageHandlerFactory;
+import com.blopker.wamplay.models.PubSub;
+import com.blopker.wamplay.models.WAMPlayClient;
+import com.blopker.wamplay.models.messages.MessageTypes;
+import com.blopker.wamplay.models.messages.Welcome;
 
 public class WAMPlayServer extends Controller {
 	public static String VERSION = "WAMPlay/0.0.1";
@@ -25,6 +29,7 @@ public class WAMPlayServer extends Controller {
 
 	static ALogger log = Logger.of(WAMPlayServer.class);
 	static ConcurrentMap<String, WAMPlayClient> clients = new ConcurrentHashMap<String, WAMPlayClient>();
+
 
 	/**
 	 * Handle the websocket.
@@ -39,7 +44,7 @@ public class WAMPlayServer extends Controller {
 				final WAMPlayClient client = new WAMPlayClient(out);
 				WAMPlayServer.addClient(client);
 
-				if (in != null) { // check if testing.
+				if (in != null) { // null if testing.
 					in.onClose(new Callback0() {
 
 						@Override
@@ -62,6 +67,12 @@ public class WAMPlayServer extends Controller {
 		};
 	}
 
+	/**
+	 * Sends a raw WAMP message to the correct controller. Method is public for easier testing.
+	 * Do not use in your application.
+	 * @param Raw WAMP JSON request.
+	 * @param Originating client.
+	 */
 	public static void handleRequest(JsonNode request, WAMPlayClient client) {
 
 		MessageTypes type;
@@ -86,11 +97,42 @@ public class WAMPlayServer extends Controller {
 		log.debug("WAMPClient: " + client.getID() + " disconnected.");
 	}
 
+	/**
+	 * Gets a connected client with a ID. Use to interact with a specific client.
+	 * @param Client's ID as a string.
+	 * @return Connected WAMP client. Returns null if there is no client.
+	 */
 	public static WAMPlayClient getClient(String clientID) {
 		return clients.get(clientID);
 	}
 
-	public static ConcurrentMap<String, WAMPlayClient> getClients() {
-		return clients;
+	/**
+	 * Gets a copy of the map of all the currently connected clients. 
+	 * @return A map of the currently connected WAMP clients.
+	 */
+	public static Map<String, WAMPlayClient> getClients() {
+		Map<String, WAMPlayClient> map = new HashMap<>();
+		map.putAll(clients);
+		return map;
+	}
+
+	public static PubSubCallback getPubSubCallback(String topic) {
+		return PubSub.getPubSubCallback(topic);
+	}
+	
+	public static void addTopic(String topic, PubSubCallback pubSubCallback) {
+		PubSub.addTopic(topic, pubSubCallback);		
+	}
+	
+	public static void removeTopic(String topic) {
+		PubSub.removeTopic(topic);
+	}
+	
+	public static void addTopic(String topic) {
+		PubSub.addTopic(topic);
+	}
+	
+	public static void addController(WAMPlayContoller controller) {
+		PubSub.addController(controller);	
 	}
 }

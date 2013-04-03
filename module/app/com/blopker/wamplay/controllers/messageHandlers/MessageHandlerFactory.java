@@ -1,9 +1,10 @@
-package controllers.messageHandlers;
+package com.blopker.wamplay.controllers.messageHandlers;
 
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
-import models.messages.MessageTypes;
+import com.blopker.wamplay.models.messages.MessageTypes;
+
 
 public class MessageHandlerFactory {
 	

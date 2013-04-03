@@ -9,4 +9,4 @@ GET     /                           controllers.Application.index()
 GET     /assets/*file               controllers.Assets.at(path="/public", file)
 
 # WAMPlay route
-GET   /pubsub                       controllers.WAMPlayServer.connect()
+GET   /pubsub                       com.blopker.wamplay.controllers.WAMPlayServer.connect()

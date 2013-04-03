@@ -1,4 +1,4 @@
-package models.messages;
+package com.blopker.wamplay.models.messages;
 
 import java.util.List;
 

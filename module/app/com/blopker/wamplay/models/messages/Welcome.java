@@ -1,9 +1,10 @@
-package models.messages;
+package com.blopker.wamplay.models.messages;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import controllers.WAMPlayServer;
+import com.blopker.wamplay.controllers.WAMPlayServer;
+
 
 public class Welcome implements Message{
 	final String clientID;

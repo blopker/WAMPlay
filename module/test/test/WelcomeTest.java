@@ -1,12 +1,13 @@
 package test;
 
 import static org.fest.assertions.Assertions.assertThat;
-import models.WAMPlayClient;
-import models.messages.Welcome;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+
+import com.blopker.wamplay.models.WAMPlayClient;
+import com.blopker.wamplay.models.messages.Welcome;
 
 public class WelcomeTest {
 	WAMPlayClient client;

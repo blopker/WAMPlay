@@ -1,8 +1,9 @@
-package controllers.messageHandlers;
+package com.blopker.wamplay.controllers.messageHandlers;
 
-import models.WAMPlayClient;
 
 import org.codehaus.jackson.JsonNode;
+
+import com.blopker.wamplay.models.WAMPlayClient;
 
 public class UnsubscribeHandler implements MessageHandler {
 

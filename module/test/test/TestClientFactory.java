@@ -4,8 +4,9 @@ import java.util.HashSet;
 import java.util.Map.Entry;
 import java.util.Set;
 
-import controllers.WAMPlayServer;
-import models.WAMPlayClient;
+import com.blopker.wamplay.controllers.WAMPlayServer;
+import com.blopker.wamplay.models.WAMPlayClient;
+
 
 public class TestClientFactory {
 	static Set<Entry<String, WAMPlayClient>> oldSet = new HashSet<>(); 

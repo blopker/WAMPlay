@@ -1,6 +1,6 @@
-package models.messages;
+package com.blopker.wamplay.models.messages;
 
-import controllers.messageHandlers.*;
+import com.blopker.wamplay.controllers.messageHandlers.*;
 
 public enum MessageTypes {
 	WELCOME(0, null),

@@ -1,4 +1,4 @@
-package models;
+package com.blopker.wamplay.models;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -6,9 +6,10 @@ import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
-import models.messages.Message;
 
 import org.codehaus.jackson.JsonNode;
+
+import com.blopker.wamplay.models.messages.Message;
 
 import play.Logger;
 import play.Logger.ALogger;
@@ -36,7 +37,11 @@ public class WAMPlayClient {
 			return;
 		}
 		JsonNode node = Json.toJson(message.toList());
-		out.write(node);
+		try {
+			out.write(node);
+		} catch (Exception e) {
+			log.error("Cannot send, client dead!");
+		}
 	}
 
 	public void setPrefix(String prefix, String URI) {
