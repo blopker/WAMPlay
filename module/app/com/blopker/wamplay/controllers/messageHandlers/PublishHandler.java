@@ -3,13 +3,13 @@ package com.blopker.wamplay.controllers.messageHandlers;
 
 import org.codehaus.jackson.JsonNode;
 
+import play.Logger;
+import play.Logger.ALogger;
+
 import com.blopker.wamplay.callbacks.PubSubCallback;
 import com.blopker.wamplay.controllers.WAMPlayServer;
 import com.blopker.wamplay.models.WAMPlayClient;
 import com.blopker.wamplay.models.messages.Event;
-
-import play.Logger;
-import play.Logger.ALogger;
 
 
 
@@ -27,8 +27,8 @@ public class PublishHandler implements MessageHandler {
 			return;
 		}
 		
-		message = cb.runPubCallback(senderClient, message);
-	
+		JsonNode event = cb.runPubCallback(senderClient, message.get(2));
+		
 		if (cb.isCanceled()) {
 			log.info("Callback for " + topic + " canceled.");
 			return;
@@ -46,7 +46,7 @@ public class PublishHandler implements MessageHandler {
 			}
 			
 			if (client.isSubscribed(topic)) {
-				client.send(new Event(topic, message.get(2)));
+				client.send(new Event(topic, event));
 				log.info("Sent: "  + topic + " to: " + client.getID());
 			}
 		}

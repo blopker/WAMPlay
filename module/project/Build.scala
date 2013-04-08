@@ -5,9 +5,10 @@ import play.Project._
 object ApplicationBuild extends Build {
 
   val appName         = "WAMPlay"
-  val appVersion      = "0.0.1"
+  val appVersion      = "0.0.2-SNAPSHOT"
 
   val appDependencies = Seq(
+  	javaCore
   )
 
   val main = play.Project(appName, appVersion, appDependencies).settings(

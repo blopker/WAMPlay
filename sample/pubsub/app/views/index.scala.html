@@ -1,7 +1,76 @@
 @(message: String)
 
-@main("Welcome to Play 2.1") {
-    
-    @play20.welcome(message, style = "Java")
-    
+@main("WAMPlay PubSub Example") {
+  <h1>WAMPlay PubSub Example</h1>
+
+  <input id="pub-input" type="text">
+  <button id="chat-button">
+    Publish to chat
+  </button>
+  <button id="truncate-button">
+    Publish to truncate (10 char max)
+  </button>
+
+  <h2>Output:</h2>
+  <div id="output" class="well">
+
+  </div>
+
+  <script src="http://autobahn.s3.amazonaws.com/js/autobahn.min.js"></script>
+  <script type="text/javascript" charset="utf-8">
+    // Get WAMP endpoint URL
+    var wsuri = "@com.blopker.wamplay.controllers.routes.WAMPlayServer.connect().webSocketURL(request)";
+    var chat_topic = "http://example.com/chat";
+    var truncate_topic = "http://example.com/truncate";
+
+    function write (output, error) {
+      var d = $('<div>').html(output);
+      if (error) {d.addClass("error")};
+      $('#output').append(d);
+    }
+
+    function onEvent(topic, event) {
+      write("Message from topic: " + topic + ":");
+      write(event);
+    }
+
+    function setUpControls (session) {
+      $("#chat-button").click(function() {
+        var message = $("#pub-input").val();
+        session.publish(chat_topic, message);
+      });
+
+      $("#truncate-button").click(function() {
+        var message = $("#pub-input").val();
+        session.publish(truncate_topic, message);
+      });
+    }
+
+    $(function() {
+      // connect to WAMPlay server
+      write("Connecting to WAMPlay server...");
+      ab.connect(wsuri,
+
+        // WAMP session was established
+        function (session) {
+          setUpControls(session);
+          write("Connected to " + wsuri);
+
+          // subscribe to topic, providing an event handler
+          session.subscribe(truncate_topic, onEvent);
+          write("Subscribed to " + truncate_topic);
+
+          session.subscribe(chat_topic, onEvent);
+          write("Subscribed to " + chat_topic);
+        },
+
+        // WAMP session is gone
+        function (code, reason) {
+          write("Connection lost (" + reason + ")", true);
+        },
+        {skipSubprotocolCheck:true, skipSubprotocolAnnounce:true} // Important! Play rejects all subprotocols for some reason...
+      );
+    });
+  </script>
+
 }
