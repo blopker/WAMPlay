@@ -50,7 +50,7 @@ public class PubSubTest {
 
 	private void subscribe(String topic, WAMPlayClient client) {
 		JsonNode req = Json.parse("[5, \"" + topic + "\"]");
-		WAMPlayServer.handleRequest(req, client);
+		WAMPlayServer.handleRequest(client, req);
 	}
 
 	@Test
@@ -71,7 +71,7 @@ public class PubSubTest {
 
 	private void unsubscribe(String topic, WAMPlayClient client) {
 		JsonNode req = Json.parse("[6, \"" + topic + "\"]");
-		WAMPlayServer.handleRequest(req, client);
+		WAMPlayServer.handleRequest(client, req);
 	}
 
 	@Test
@@ -105,7 +105,7 @@ public class PubSubTest {
 			res.add(true);
 		}
 		JsonNode req = Json.toJson(res);
-		WAMPlayServer.handleRequest(req, client);
+		WAMPlayServer.handleRequest(client, req);
 	}
 
 	@Test

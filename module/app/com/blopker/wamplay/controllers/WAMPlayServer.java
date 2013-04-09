@@ -14,10 +14,12 @@ import play.libs.F.Callback0;
 import play.mvc.Controller;
 import play.mvc.WebSocket;
 
+import com.blopker.wamplay.annotations.ControllerURIPrefix;
 import com.blopker.wamplay.callbacks.PubSubCallback;
 import com.blopker.wamplay.controllers.messageHandlers.MessageHandler;
 import com.blopker.wamplay.controllers.messageHandlers.MessageHandlerFactory;
 import com.blopker.wamplay.models.PubSub;
+import com.blopker.wamplay.models.RPC;
 import com.blopker.wamplay.models.WAMPlayClient;
 import com.blopker.wamplay.models.messages.MessageTypes;
 import com.blopker.wamplay.models.messages.Welcome;
@@ -57,7 +59,7 @@ public class WAMPlayServer extends Controller {
 
 						@Override
 						public void invoke(JsonNode request) throws Throwable {
-							handleRequest(request, client);
+							handleRequest(client, request);
 						}
 					});
 				}
@@ -73,7 +75,7 @@ public class WAMPlayServer extends Controller {
 	 * @param Raw WAMP JSON request.
 	 * @param Originating client.
 	 */
-	public static void handleRequest(JsonNode request, WAMPlayClient client) {
+	public static void handleRequest(WAMPlayClient client, JsonNode request) {
 
 		MessageTypes type;
 		try {
@@ -133,6 +135,12 @@ public class WAMPlayServer extends Controller {
 	}
 	
 	public static void addController(WAMPlayContoller controller) {
-		PubSub.addController(controller);	
+		String prefix = "";
+		if (controller.getClass().isAnnotationPresent(ControllerURIPrefix.class)) {
+			prefix = controller.getClass().getAnnotation(ControllerURIPrefix.class).value();
+		}
+		
+		PubSub.addController(prefix, controller);	
+		RPC.addController(prefix, controller);
 	}
 }

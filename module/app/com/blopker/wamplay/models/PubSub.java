@@ -10,7 +10,6 @@ import org.codehaus.jackson.JsonNode;
 import play.Logger;
 import play.Logger.ALogger;
 
-import com.blopker.wamplay.annotations.ControllerURIPrefix;
 import com.blopker.wamplay.annotations.onPublish;
 import com.blopker.wamplay.annotations.onSubscribe;
 import com.blopker.wamplay.callbacks.PubCallback;
@@ -22,11 +21,7 @@ public class PubSub {
 	static ALogger log = Logger.of(PubSub.class.getSimpleName());
 	static ConcurrentMap<String, PubSubCallback> topics = new ConcurrentHashMap<String, PubSubCallback>();
 
-	public static void addController(final WAMPlayContoller controller) {
-		String prefix = "";
-		if (controller.getClass().isAnnotationPresent(ControllerURIPrefix.class)) {
-			prefix = controller.getClass().getAnnotation(ControllerURIPrefix.class).value();
-		}
+	public static void addController(String prefix, final WAMPlayContoller controller) {
 		
 		for (final Method method : controller.getClass().getMethods()) {
 			if (method.isAnnotationPresent(onPublish.class)) {
