@@ -5,27 +5,28 @@ import java.util.List;
 
 import org.codehaus.jackson.JsonNode;
 
-public class Event implements Message{
-	final JsonNode event;
-	final String topic;
+public class CallResult implements Message{
+	final JsonNode result;
+	final String procURI;
 	final List<Object> res = new ArrayList<Object>();
 	
-	public Event(String topic, JsonNode event) {
-		this.topic = topic;
-		this.event = event;
+	public CallResult(String procURI, JsonNode result) {
+		this.procURI = procURI;
+		this.result = result;
 		
 		res.add(getType().getTypeCode());
-		res.add(topic);
-		res.add(event);
+		res.add(procURI);
+		res.add(result);
 	}	
 	
 	@Override
 	public MessageTypes getType() {
-		return MessageTypes.EVENT;
+		return MessageTypes.CALLRESULT;
 	}
 
 	@Override
 	public List<Object> toList() {
 		return res;
 	}
+
 }

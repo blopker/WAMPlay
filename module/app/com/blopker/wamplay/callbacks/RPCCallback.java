@@ -1,5 +1,9 @@
 package com.blopker.wamplay.callbacks;
 
-public class RPCCallback {
+import org.codehaus.jackson.JsonNode;
 
+import com.blopker.wamplay.models.WAMPlayClient;
+
+public abstract class RPCCallback {
+	public abstract JsonNode call(WAMPlayClient client, JsonNode... args);
 }

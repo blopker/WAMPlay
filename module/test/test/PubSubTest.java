@@ -82,13 +82,13 @@ public class PubSubTest {
 		subscribe(topic, client2);
 
 		publish(topic, client2, true);
-		assertThat(client2.testLastSent().toList().toString()).doesNotContain(
+		assertThat(client2.lastMessage().toList().toString()).doesNotContain(
 				"Hello, WAMP!");
-		assertThat(client.testLastSent().toList().toString()).contains(
+		assertThat(client.lastMessage().toList().toString()).contains(
 				"Hello, WAMP!");
 
 		publish(topic, client2, false);
-		assertThat(client2.testLastSent().toList().toString()).contains(
+		assertThat(client2.lastMessage().toList().toString()).contains(
 				"Hello, WAMP!");
 	}
 
@@ -130,10 +130,10 @@ public class PubSubTest {
 		subscribe(topic, client);
 		
 		publish(topic, "cancel this message", client, false);
-		assertThat(client.testLastSent().toList().toString()).doesNotContain("cancel");
+		assertThat(client.lastMessage().toList().toString()).doesNotContain("cancel");
 		
 		publish(topic, "not this message though", client, false);
-		assertThat(client.testLastSent().toList().toString()).contains("message");
+		assertThat(client.lastMessage().toList().toString()).contains("message");
 		
 	}
 	
@@ -147,9 +147,9 @@ public class PubSubTest {
 		subscribe(topic, client);
 		
 		publish(topic, "cancel this message", client, false);
-		assertThat(client.testLastSent().toList().toString()).doesNotContain("cancel");
+		assertThat(client.lastMessage().toList().toString()).doesNotContain("cancel");
 		
 		publish(topic, "not this message though", client, false);
-		assertThat(client.testLastSent().toList().toString()).contains("message");
+		assertThat(client.lastMessage().toList().toString()).contains("message");
 	}
 }

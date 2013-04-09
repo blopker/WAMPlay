@@ -86,7 +86,7 @@ public class WAMPlayServer extends Controller {
 		}
 
 		MessageHandler handler = MessageHandlerFactory.get(type);
-		handler.process(request, client);
+		handler.process(client, request);
 	}
 
 	private static void addClient(WAMPlayClient client) {

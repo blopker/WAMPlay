@@ -31,7 +31,13 @@ public class RPCTest {
 	@Test
 	public void getMeaningOfLife() {
 		call(client, "test#meaningOfLife");
-		assertThat(client.testLastSent().toList().toString()).contains("Meaning of life is: 42");
+		assertThat(client.lastMessage().toList().toString()).contains("Meaning of life is: 42");
+	}
+	
+	@Test
+	public void testAdd() {
+		callAdd(client, 42, 100);
+		assertThat(client.lastMessage().toList().toString()).contains(", 142");
 	}
 	
 	public void call(WAMPlayClient client, String URI) {

@@ -5,8 +5,8 @@ import com.blopker.wamplay.controllers.messageHandlers.*;
 public enum MessageTypes {
 	WELCOME(0, null),
 //	PREFIX(1),
-//	CALL(2),
-//	CALLRESULT(3),
+	CALL(2, RPCHandler.class),
+	CALLRESULT(3, null),
 //	CALLERROR(4),
 	SUBSCRIBE(5, SubscribeHandler.class),
 	UNSUBSCRIBE(6, UnsubscribeHandler.class),

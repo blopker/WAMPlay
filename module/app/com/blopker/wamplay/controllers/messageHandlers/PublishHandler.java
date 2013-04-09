@@ -17,7 +17,7 @@ public class PublishHandler implements MessageHandler {
 	static ALogger log = Logger.of(PublishHandler.class.getSimpleName());
 	
 	@Override
-	public void process(JsonNode message, WAMPlayClient senderClient) {
+	public void process(WAMPlayClient senderClient, JsonNode message) {
 		String topic = message.get(1).asText();
 		
 		PubSubCallback cb = WAMPlayServer.getPubSubCallback(topic);

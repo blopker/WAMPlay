@@ -78,7 +78,7 @@ public class WAMPlayClient {
 		}
 	}
 	
-	public Message testLastSent() {
+	public Message lastMessage() {
 		return lastSent;
 	}
 }
