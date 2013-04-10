@@ -5,7 +5,7 @@ import com.typesafe.config._
 
 object ApplicationBuild extends Build {
   val appName         = "WAMPlay"
-  val appVersion      = "0.0.3"
+  val appVersion      = "0.0.3-SNAPSHOP"
 
   val appDependencies = Seq(
   	javaCore
