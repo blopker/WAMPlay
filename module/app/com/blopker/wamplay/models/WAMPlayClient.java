@@ -68,7 +68,7 @@ public class WAMPlayClient {
 		topics.remove(convertCURIEToURI(topic));
 	}
 
-	public String getID() {
+	public String getSessionID() {
 		return this.ID;
 	}
 	

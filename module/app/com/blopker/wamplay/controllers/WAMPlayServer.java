@@ -63,7 +63,7 @@ public class WAMPlayServer extends Controller {
 						}
 					});
 				}
-				client.send(new Welcome(client.getID()));
+				client.send(new Welcome(client.getSessionID()));
 				lastClient = client;
 			}
 		};
@@ -90,13 +90,13 @@ public class WAMPlayServer extends Controller {
 	}
 
 	private static void addClient(WAMPlayClient client) {
-		clients.put(client.getID(), client);
-		log.debug("WAMPClient: " + client.getID() + " connected.");
+		clients.put(client.getSessionID(), client);
+		log.debug("WAMPClient: " + client.getSessionID() + " connected.");
 	}
 
 	private static void removeClient(WAMPlayClient client) {
-		clients.remove(client.getID());
-		log.debug("WAMPClient: " + client.getID() + " disconnected.");
+		clients.remove(client.getSessionID());
+		log.debug("WAMPClient: " + client.getSessionID() + " disconnected.");
 	}
 
 	/**

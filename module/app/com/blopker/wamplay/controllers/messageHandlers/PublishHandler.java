@@ -40,14 +40,14 @@ public class PublishHandler implements MessageHandler {
 		}
 
 		for (WAMPlayClient client : WAMPlayServer.getClients().values()) {
-			if (excludeMe && client.getID().equals(senderClient.getID())) {
+			if (excludeMe && client.getSessionID().equals(senderClient.getSessionID())) {
 				// Client does not want to get its own event.
 				continue;
 			}
 			
 			if (client.isSubscribed(topic)) {
 				client.send(new Event(topic, event));
-				log.info("Sent: "  + topic + " to: " + client.getID());
+				log.info("Sent: "  + topic + " to: " + client.getSessionID());
 			}
 		}
 	}

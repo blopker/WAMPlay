@@ -23,7 +23,6 @@ public class PubSub extends WAMPlayContoller {
 	 */
 	@onPublish("truncate")
 	public static JsonNode truncatePublish(WAMPlayClient client, JsonNode event) {
-		System.out.println(event);
 		if (!event.isTextual()) {
 			return cancel();
 		}		

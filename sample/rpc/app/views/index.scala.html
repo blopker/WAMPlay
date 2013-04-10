@@ -1,0 +1,78 @@
+@(message: String)
+
+@main(message) {
+  <h1>@message</h1>
+
+  <button id="life-button">
+    Get meaning of life
+  </button>
+  <br>
+  <button id="capital-button">
+    Capitalize word
+  </button>
+  <input id="capital-input" type="text">
+
+  <h2>Output:</h2>
+  <div id="output" class="well">
+
+  </div>
+
+  <script src="http://autobahn.s3.amazonaws.com/js/autobahn.js"></script>
+  <script type="text/javascript" charset="utf-8">
+    // Get WAMP endpoint URL
+    var wsuri = "@com.blopker.wamplay.controllers.routes.WAMPlayServer.connect().webSocketURL(request)";
+
+    var molURI = "http://example.com/calc#meaningOfLife";
+    var capitalURI = "http://example.com/calc#capital";
+
+    function isNumber(n) {
+      return !isNaN(parseFloat(n)) && isFinite(n);
+    }
+
+    function write (output) {
+      var d = $('<div>');
+      if (output.uri) {
+        d.addClass("error")
+        d.html(output.uri + ", " + output.desc + ", " +output.detail)
+      } else {
+        d.html(output);
+      }
+      $('#output').append(d);
+    }
+
+
+    function setUpControls (session) {
+      $("#life-button").click(function() {
+        write("Sending call to: " + molURI);
+        session.call(molURI).then(write, write);
+      });
+
+      $("#capital-button").click(function() {
+        var message = $("#capital-input").val();
+        message = (isNumber(message))?parseFloat(message):message;
+        write("Sending call to: " + capitalURI);
+        session.call(capitalURI, message).then(write, write);
+      });
+    }
+
+    $(function() {
+      // connect to WAMPlay server
+      write("Connecting to WAMPlay server...");
+      ab.connect(wsuri,
+
+        // WAMP session was established
+        function (session) {
+          setUpControls(session);
+          write("Connected to " + wsuri);
+        },
+
+        // WAMP session is gone
+        function (code, reason) {
+          write("Connection lost (" + reason + ")", true);
+        },
+        {skipSubprotocolCheck:true, skipSubprotocolAnnounce:true} // Important! Play rejects all subprotocols for some reason...
+      );
+    });
+  </script>
+
+}

@@ -17,7 +17,7 @@ public class TestPubSubController extends WAMPlayContoller{
 	
 	@onSubscribe("/controller")
 	public static WAMPlayClient capitalSubscribe(WAMPlayClient subscribingClient) {
-		log.info(subscribingClient.getID() + " subscribed!");
+		log.info(subscribingClient.getSessionID() + " subscribed!");
 		return subscribingClient;
 	}
 	

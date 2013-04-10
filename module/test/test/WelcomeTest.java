@@ -24,7 +24,7 @@ public class WelcomeTest {
 
 	@Test
 	public void welcomeTest() {
-		client.send(new Welcome(client.getID()));
-		assertThat(client.lastMessage().toList().toString()).contains(client.getID());
+		client.send(new Welcome(client.getSessionID()));
+		assertThat(client.lastMessage().toList().toString()).contains(client.getSessionID());
 	}
 }
