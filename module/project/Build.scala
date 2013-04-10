@@ -1,11 +1,11 @@
 import sbt._
 import Keys._
 import play.Project._
+import com.typesafe.config._
 
 object ApplicationBuild extends Build {
-
   val appName         = "WAMPlay"
-  val appVersion      = "0.0.2-SNAPSHOT"
+  val appVersion      = "0.0.3"
 
   val appDependencies = Seq(
   	javaCore

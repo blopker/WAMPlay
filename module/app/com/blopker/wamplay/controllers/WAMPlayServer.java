@@ -7,6 +7,7 @@ import java.util.concurrent.ConcurrentMap;
 
 import org.codehaus.jackson.JsonNode;
 
+import play.Application;
 import play.Logger;
 import play.Logger.ALogger;
 import play.libs.F.Callback;
@@ -25,7 +26,7 @@ import com.blopker.wamplay.models.messages.MessageTypes;
 import com.blopker.wamplay.models.messages.Welcome;
 
 public class WAMPlayServer extends Controller {
-	public static String VERSION = "WAMPlay/0.0.1";
+	public static String VERSION = "WAMPlay/0.0.3";
 	public static int PROTOCOL_VERSION = 1;
 	public static WAMPlayClient lastClient;
 
@@ -42,7 +43,6 @@ public class WAMPlayServer extends Controller {
 			// Called when the Websocket Handshake is done.
 			public void onReady(WebSocket.In<JsonNode> in,
 					final WebSocket.Out<JsonNode> out) {
-
 				final WAMPlayClient client = new WAMPlayClient(out);
 				WAMPlayServer.addClient(client);
 
