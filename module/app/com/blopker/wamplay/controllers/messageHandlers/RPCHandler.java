@@ -43,8 +43,8 @@ public class RPCHandler implements MessageHandler{
 			System.out.println(resp.toString());
 			client.send(resp);
 		} catch (Throwable e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			CallError resp = new CallError(callID, procURI, "500", e.toString());
+			client.send(resp);
 		}
 	}
 

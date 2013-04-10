@@ -35,12 +35,9 @@ public class RPC {
 								return Json.toJson(method.invoke(null, client));
 							}
 							return Json.toJson(method.invoke(null, client, args));
-						} catch (IllegalAccessException e) {
-							e.printStackTrace();
 						} catch (InvocationTargetException e) {
 							throw e.getCause();
 						}
-						return null;
 					}
 				});
 			}
