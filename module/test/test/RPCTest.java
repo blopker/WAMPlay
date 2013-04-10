@@ -10,6 +10,7 @@ import play.libs.Json;
 
 import com.blopker.wamplay.controllers.WAMPlayServer;
 import com.blopker.wamplay.models.WAMPlayClient;
+import com.blopker.wamplay.models.messages.CallError;
 
 public class RPCTest {
 	WAMPlayClient client;
@@ -31,13 +32,27 @@ public class RPCTest {
 	@Test
 	public void getMeaningOfLife() {
 		call(client, "test#meaningOfLife");
-		assertThat(client.lastMessage().toList().toString()).contains("Meaning of life is: 42");
+		assertThat(client.lastMessage().toString()).contains("Meaning of life is: 42");
+		assertThat(client.lastMessage().toString()).contains("rpcidtest#meaningOfLife");
 	}
 	
 	@Test
 	public void testAdd() {
 		callAdd(client, 42, 100);
-		assertThat(client.lastMessage().toList().toString()).contains(", 142");
+		assertThat(client.lastMessage().toString()).contains(", 142");
+	}
+	
+	@Test
+	public void testError() {
+		call(client, "notARealThing");
+		assertThat(client.lastMessage()).isInstanceOf(CallError.class);
+	}
+	
+	@Test
+	public void testIllegalArgumentError() {
+		callAdd(client, 1, "not a number");
+		assertThat(client.lastMessage()).isInstanceOf(CallError.class);
+		assertThat(client.lastMessage().toString()).contains("Argument is not a number!");
 	}
 	
 	public void call(WAMPlayClient client, String URI) {
@@ -45,9 +60,9 @@ public class RPCTest {
 		WAMPlayServer.handleRequest(client, Json.toJson(req));
 	}
 	
-	public void callAdd(WAMPlayClient client, int a, int b) {
+	public void callAdd(WAMPlayClient client, int a, Object b) {
 		String URI = "test#add";
-		Object[] req = {"2", "rpcid" + a + b, URI, a, b};
+		Object[] req = {"2", "rpcidadd", URI, a, b};
 		WAMPlayServer.handleRequest(client, Json.toJson(req));
 	}
 }

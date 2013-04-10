@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.codehaus.jackson.JsonNode;
 
-public class Event implements Message{
+public class Event extends Message{
 	final JsonNode event;
 	final String topic;
 	final List<Object> res = new ArrayList<Object>();

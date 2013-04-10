@@ -7,7 +7,7 @@ public enum MessageTypes {
 //	PREFIX(1),
 	CALL(2, RPCHandler.class),
 	CALLRESULT(3, null),
-//	CALLERROR(4),
+	CALLERROR(4, null),
 	SUBSCRIBE(5, SubscribeHandler.class),
 	UNSUBSCRIBE(6, UnsubscribeHandler.class),
 	PUBLISH(7, PublishHandler.class),

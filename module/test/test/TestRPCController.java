@@ -19,6 +19,9 @@ public class TestRPCController extends WAMPlayContoller {
 	public static int add(WAMPlayClient client, JsonNode[] args){
 		int ans = 0;
 		for (JsonNode jsonNode : args) {
+			if (!jsonNode.isInt()) {
+				throw new IllegalArgumentException("Argument is not a number!");
+			}
 			ans += jsonNode.asInt();
 		}
 		return ans;

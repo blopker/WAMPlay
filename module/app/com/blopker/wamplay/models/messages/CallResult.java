@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.codehaus.jackson.JsonNode;
 
-public class CallResult implements Message{
+public class CallResult extends Message{
 	final JsonNode result;
 	final String procURI;
 	final List<Object> res = new ArrayList<Object>();

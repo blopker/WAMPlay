@@ -8,6 +8,7 @@ import org.codehaus.jackson.JsonNode;
 import com.blopker.wamplay.callbacks.RPCCallback;
 import com.blopker.wamplay.models.RPC;
 import com.blopker.wamplay.models.WAMPlayClient;
+import com.blopker.wamplay.models.messages.CallError;
 import com.blopker.wamplay.models.messages.CallResult;
 
 public class RPCHandler implements MessageHandler{
@@ -25,10 +26,26 @@ public class RPCHandler implements MessageHandler{
 
 		RPCCallback cb = RPC.getCallback(procURI);
 		if (cb == null) {
-			//procURI not found
+			client.send(new CallError(callID, procURI, "404", "RPC method not found!"));
+			return;
 		}
-		JsonNode response = cb.call(client, args.toArray(new JsonNode[args.size()]));
-		client.send(new CallResult(callID, response));
+		
+		try {
+			JsonNode response = cb.call(client, args.toArray(new JsonNode[args.size()]));
+			client.send(new CallResult(callID, response));
+		} catch (IllegalArgumentException e) {
+			CallError resp;
+			if (e.getMessage() == null) {
+				resp = new CallError(callID, procURI, "400");
+			} else {
+				resp = new CallError(callID, procURI, "400", e.getMessage());
+			}
+			System.out.println(resp.toString());
+			client.send(resp);
+		} catch (Throwable e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 }

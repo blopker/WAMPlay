@@ -28,7 +28,7 @@ public class RPC {
 				procURIs.put(procURI, new RPCCallback() {
 					
 					@Override
-					public JsonNode call(WAMPlayClient client, JsonNode... args) {
+					public JsonNode call(WAMPlayClient client, JsonNode... args) throws Throwable {
 						try {
 							if (args.length == 0) {
 								log.debug("No RPC arguments!");
@@ -36,14 +36,9 @@ public class RPC {
 							}
 							return Json.toJson(method.invoke(null, client, args));
 						} catch (IllegalAccessException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						} catch (IllegalArgumentException e) {
-							log.error(controller.getClass().getSimpleName() + " " + method.getName() + " has incorrect arguments!");
 							e.printStackTrace();
 						} catch (InvocationTargetException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
+							throw e.getCause();
 						}
 						return null;
 					}

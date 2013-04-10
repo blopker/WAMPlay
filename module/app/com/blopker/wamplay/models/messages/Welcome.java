@@ -6,7 +6,7 @@ import java.util.List;
 import com.blopker.wamplay.controllers.WAMPlayServer;
 
 
-public class Welcome implements Message{
+public class Welcome extends Message{
 	final String clientID;
 	
 	public Welcome(String clientID) {
