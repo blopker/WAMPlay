@@ -20,8 +20,8 @@ public class CallResult extends Message{
 	}	
 	
 	@Override
-	public MessageTypes getType() {
-		return MessageTypes.CALLRESULT;
+	public MessageType getType() {
+		return MessageType.CALLRESULT;
 	}
 
 	@Override

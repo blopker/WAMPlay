@@ -21,7 +21,7 @@ import com.blopker.wamplay.controllers.messageHandlers.MessageHandler;
 import com.blopker.wamplay.models.PubSub;
 import com.blopker.wamplay.models.RPC;
 import com.blopker.wamplay.models.WAMPlayClient;
-import com.blopker.wamplay.models.messages.MessageTypes;
+import com.blopker.wamplay.models.messages.MessageType;
 import com.blopker.wamplay.models.messages.Welcome;
 
 public class WAMPlayServer extends Controller {
@@ -76,9 +76,9 @@ public class WAMPlayServer extends Controller {
 	 */
 	public static void handleRequest(WAMPlayClient client, JsonNode request) {
 
-		MessageTypes type;
+		MessageType type;
 		try {
-			type = MessageTypes.getType(request.get(0).asInt());
+			type = MessageType.getType(request.get(0).asInt());
 		} catch (EnumConstantNotPresentException e) {
 			log.error("Message type not implemented! " + request.toString());
 			return;

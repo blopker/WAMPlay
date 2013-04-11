@@ -25,8 +25,8 @@ public class CallError extends Message {
 	}
 	
 	@Override
-	public MessageTypes getType() {
-		return MessageTypes.CALLERROR;
+	public MessageType getType() {
+		return MessageType.CALLERROR;
 	}
 
 	@Override

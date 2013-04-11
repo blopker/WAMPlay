@@ -14,8 +14,8 @@ public class Welcome extends Message{
 	}
 	
 	@Override
-	public MessageTypes getType() {
-		return MessageTypes.WELCOME;
+	public MessageType getType() {
+		return MessageType.WELCOME;
 	}
 
 	@Override

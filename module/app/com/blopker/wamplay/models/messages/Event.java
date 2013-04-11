@@ -20,8 +20,8 @@ public class Event extends Message{
 	}	
 	
 	@Override
-	public MessageTypes getType() {
-		return MessageTypes.EVENT;
+	public MessageType getType() {
+		return MessageType.EVENT;
 	}
 
 	@Override
