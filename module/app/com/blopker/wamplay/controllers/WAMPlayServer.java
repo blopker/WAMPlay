@@ -18,7 +18,6 @@ import play.mvc.WebSocket;
 import com.blopker.wamplay.annotations.ControllerURIPrefix;
 import com.blopker.wamplay.callbacks.PubSubCallback;
 import com.blopker.wamplay.controllers.messageHandlers.MessageHandler;
-import com.blopker.wamplay.controllers.messageHandlers.MessageHandlerFactory;
 import com.blopker.wamplay.models.PubSub;
 import com.blopker.wamplay.models.RPC;
 import com.blopker.wamplay.models.WAMPlayClient;
@@ -85,8 +84,7 @@ public class WAMPlayServer extends Controller {
 			return;
 		}
 
-		MessageHandler handler = MessageHandlerFactory.get(type);
-		handler.process(client, request);
+		type.getHandler().process(client, request);
 	}
 
 	private static void addClient(WAMPlayClient client) {
