@@ -76,7 +76,6 @@ public class WAMPlayServer extends Controller {
 	 * @param Originating client.
 	 */
 	public static void handleRequest(WAMPlayClient client, JsonNode request) {
-
 		MessageHandler handler = HandlerFactory.get(request);
 		handler.process(client, request);
 	}

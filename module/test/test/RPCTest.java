@@ -56,7 +56,7 @@ public class RPCTest {
 	}
 	
 	public void call(WAMPlayClient client, String URI) {
-		Object[] req = {"2", "rpcid" + URI, URI};
+		Object[] req = {2, "rpcid" + URI, URI};
 		WAMPlayServer.handleRequest(client, Json.toJson(req));
 	}
 	
