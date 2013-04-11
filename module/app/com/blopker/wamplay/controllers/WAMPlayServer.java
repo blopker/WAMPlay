@@ -17,6 +17,7 @@ import play.mvc.WebSocket;
 
 import com.blopker.wamplay.annotations.ControllerURIPrefix;
 import com.blopker.wamplay.callbacks.PubSubCallback;
+import com.blopker.wamplay.controllers.messageHandlers.HandlerFactory;
 import com.blopker.wamplay.controllers.messageHandlers.MessageHandler;
 import com.blopker.wamplay.models.PubSub;
 import com.blopker.wamplay.models.RPC;
@@ -76,15 +77,8 @@ public class WAMPlayServer extends Controller {
 	 */
 	public static void handleRequest(WAMPlayClient client, JsonNode request) {
 
-		MessageType type;
-		try {
-			type = MessageType.getType(request.get(0).asInt());
-		} catch (EnumConstantNotPresentException e) {
-			log.error("Message type not implemented! " + request.toString());
-			return;
-		}
-
-		type.getHandler().process(client, request);
+		MessageHandler handler = HandlerFactory.get(request);
+		handler.process(client, request);
 	}
 
 	private static void addClient(WAMPlayClient client) {
