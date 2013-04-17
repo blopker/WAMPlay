@@ -12,15 +12,15 @@ Getting Started
 First add WAMPlay to appDependencies in the [Build.scala](https://github.com/blopker/WAMPlay/blob/master/sample/rpc/project/Build.scala) file:
 
 ```scala
-	"ws.wamplay" %% "wamplay" % "0.1.0"
+"ws.wamplay" %% "wamplay" % "0.1.0"
 ```
 
 Then add the WAMPlay repo in the same file:
 
 ```scala
-  val main = play.Project(appName, appVersion, appDependencies).settings(
-    resolvers ++= Seq("WAMPlay Repository" at "http://blopker.github.com/maven-repo/")
-  )
+val main = play.Project(appName, appVersion, appDependencies).settings(
+  resolvers ++= Seq("WAMPlay Repository" at "http://blopker.github.com/maven-repo/")
+)
 ```
 
 ### routes
@@ -28,8 +28,8 @@ Then add the WAMPlay repo in the same file:
 Add a WAMP endpoint to your [routes](https://github.com/blopker/WAMPlay/blob/master/sample/rpc/conf/routes) file:
 
 ```
-	# Send websocket connections to the WAMPlay server
-	GET     /wamp                     ws.wamplay.controllers.WAMPlayServer.connect()
+# Send websocket connections to the WAMPlay server
+GET     /wamp                     ws.wamplay.controllers.WAMPlayServer.connect()
 ```
 
 ### WAMPlayController
@@ -37,30 +37,30 @@ Add a WAMP endpoint to your [routes](https://github.com/blopker/WAMPlay/blob/mas
 Create a class that extends [WAMPlayController](https://github.com/blopker/WAMPlay/blob/master/sample/rpc/app/controllers/RPC.java). This is where your application will interact with clients. For more information on the annotations check out [Annotations](https://github.com/blopker/WAMPlay/wiki/Annotations).
 
 ```java
-	@URIPrefix("http://example.com/sample")
-	public class SampleController extends WAMPlayContoller {
+@URIPrefix("http://example.com/sample")
+public class SampleController extends WAMPlayContoller {
 
-		@onRPC("#meaningOfLife")
-		public static String getMeaningOfLife(String sessionID) {
-			return "Meaning of life is: 42";
-		}
-
-		@onRPC("#capital")
-		public static String add(String sessionID, JsonNode[] args) {
-			String ans = args[0].asText().toUpperCase();
-			return ans;
-		}
-
-		@onSubscribe("/chat")
-		public static boolean capitalSubscribe(String sessionID) {
-			return true;
-		}
-
-		@onPublish("/chat")
-		public static JsonNode truncatePublish(String sessionID, JsonNode event) {
-			return Json.toJson(message);
-		}
+	@onRPC("#meaningOfLife")
+	public static String getMeaningOfLife(String sessionID) {
+		return "Meaning of life is: 42";
 	}
+
+	@onRPC("#capital")
+	public static String add(String sessionID, JsonNode[] args) {
+		String ans = args[0].asText().toUpperCase();
+		return ans;
+	}
+
+	@onSubscribe("/chat")
+	public static boolean capitalSubscribe(String sessionID) {
+		return true;
+	}
+
+	@onPublish("/chat")
+	public static JsonNode truncatePublish(String sessionID, JsonNode event) {
+		return Json.toJson(message);
+	}
+}
 ```
 
 ### Global.java
@@ -68,12 +68,12 @@ Create a class that extends [WAMPlayController](https://github.com/blopker/WAMPl
 In your [Global.java](https://github.com/blopker/WAMPlay/blob/master/sample/rpc/app/Global.java) file override onStart and add your controller to the WAMPlayServer.
 
 ```java
-	public class Global extends GlobalSettings {
-		@Override
-		public void onStart(Application app) {
-			WAMPlayServer.addController(new SampleController());
-		}
+public class Global extends GlobalSettings {
+	@Override
+	public void onStart(Application app) {
+		WAMPlayServer.addController(new SampleController());
 	}
+}
 ```
 
 ### Your server is ready!
