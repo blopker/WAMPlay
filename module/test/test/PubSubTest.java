@@ -11,14 +11,14 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.blopker.wamplay.callbacks.PubSubCallback;
-import com.blopker.wamplay.controllers.WAMPlayContoller;
-import com.blopker.wamplay.controllers.WAMPlayServer;
-import com.blopker.wamplay.models.WAMPlayClient;
 
 
 
 import play.libs.Json;
+import ws.wamplay.callbacks.PubSubCallback;
+import ws.wamplay.controllers.WAMPlayContoller;
+import ws.wamplay.controllers.WAMPlayServer;
+import ws.wamplay.models.WAMPlayClient;
 
 public class PubSubTest {
 	WAMPlayClient client;

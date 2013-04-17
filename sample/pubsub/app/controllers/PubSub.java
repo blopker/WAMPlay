@@ -4,10 +4,10 @@ import org.codehaus.jackson.JsonNode;
 
 import play.libs.Json;
 
-import com.blopker.wamplay.annotations.URIPrefix;
-import com.blopker.wamplay.annotations.onPublish;
-import com.blopker.wamplay.annotations.onSubscribe;
-import com.blopker.wamplay.controllers.WAMPlayContoller;
+import ws.wamplay.annotations.URIPrefix;
+import ws.wamplay.annotations.onPublish;
+import ws.wamplay.annotations.onSubscribe;
+import ws.wamplay.controllers.WAMPlayContoller;
 
 // Prefix is optional, but helps remove duplicate code.
 @URIPrefix("http://example.com/")

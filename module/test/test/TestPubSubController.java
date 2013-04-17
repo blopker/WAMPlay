@@ -4,11 +4,11 @@ import org.codehaus.jackson.JsonNode;
 
 import play.Logger;
 import play.Logger.ALogger;
+import ws.wamplay.annotations.URIPrefix;
+import ws.wamplay.annotations.onPublish;
+import ws.wamplay.annotations.onSubscribe;
+import ws.wamplay.controllers.WAMPlayContoller;
 
-import com.blopker.wamplay.annotations.URIPrefix;
-import com.blopker.wamplay.annotations.onPublish;
-import com.blopker.wamplay.annotations.onSubscribe;
-import com.blopker.wamplay.controllers.WAMPlayContoller;
 
 @URIPrefix("example.com")
 public class TestPubSubController extends WAMPlayContoller{

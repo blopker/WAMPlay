@@ -8,9 +8,9 @@ import org.junit.Before;
 import org.junit.Test;
 
 import play.libs.Json;
+import ws.wamplay.controllers.WAMPlayServer;
+import ws.wamplay.models.WAMPlayClient;
 
-import com.blopker.wamplay.controllers.WAMPlayServer;
-import com.blopker.wamplay.models.WAMPlayClient;
 
 public class RPCTest {
 	WAMPlayClient client;

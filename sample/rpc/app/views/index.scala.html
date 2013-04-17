@@ -20,7 +20,7 @@
   <script src="http://autobahn.s3.amazonaws.com/js/autobahn.js"></script>
   <script type="text/javascript" charset="utf-8">
     // Get WAMP endpoint URL
-    var wsuri = "@com.blopker.wamplay.controllers.routes.WAMPlayServer.connect().webSocketURL(request)";
+    var wsuri = "@ws.wamplay.controllers.routes.WAMPlayServer.connect().webSocketURL(request)";
 
     var molURI = "http://example.com/calc#meaningOfLife";
     var capitalURI = "http://example.com/calc#capital";
@@ -70,7 +70,7 @@
         function (code, reason) {
           write("Connection lost (" + reason + ")", true);
         },
-        {skipSubprotocolCheck:true, skipSubprotocolAnnounce:true} // Important! Play rejects all subprotocols for some reason...
+        {skipSubprotocolCheck:true, skipSubprotocolAnnounce:true} // Important! Play rejects all subprotocols...
       );
     });
   </script>

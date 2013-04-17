@@ -4,8 +4,9 @@ import java.util.HashSet;
 import java.util.Map.Entry;
 import java.util.Set;
 
-import com.blopker.wamplay.controllers.WAMPlayServer;
-import com.blopker.wamplay.models.WAMPlayClient;
+import ws.wamplay.controllers.WAMPlayServer;
+import ws.wamplay.models.WAMPlayClient;
+
 
 
 public class TestClientFactory {

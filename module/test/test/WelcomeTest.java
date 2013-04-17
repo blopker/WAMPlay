@@ -6,8 +6,9 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.blopker.wamplay.models.WAMPlayClient;
-import com.blopker.wamplay.models.messages.Welcome;
+import ws.wamplay.models.WAMPlayClient;
+import ws.wamplay.models.messages.Welcome;
+
 
 public class WelcomeTest {
 	WAMPlayClient client;

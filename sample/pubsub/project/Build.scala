@@ -9,7 +9,7 @@ object ApplicationBuild extends Build {
 
   val appDependencies = Seq(
     javaCore,
-    "com.blopker" %% "wamplay" % "0.0.4"
+    "ws.wamplay" %% "wamplay" % "0.1.0"
   )
 
   val main = play.Project(appName, appVersion, appDependencies).settings(

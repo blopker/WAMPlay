@@ -2,9 +2,10 @@ package test;
 
 import org.codehaus.jackson.JsonNode;
 
-import com.blopker.wamplay.annotations.URIPrefix;
-import com.blopker.wamplay.annotations.onRPC;
-import com.blopker.wamplay.controllers.WAMPlayContoller;
+import ws.wamplay.annotations.URIPrefix;
+import ws.wamplay.annotations.onRPC;
+import ws.wamplay.controllers.WAMPlayContoller;
+
 
 @URIPrefix("test")
 public class TestRPCController extends WAMPlayContoller {

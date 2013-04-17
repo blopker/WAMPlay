@@ -1,7 +1,7 @@
 import play.Application;
 import play.GlobalSettings;
 
-import com.blopker.wamplay.controllers.WAMPlayServer;
+import ws.wamplay.controllers.WAMPlayServer;
 
 import controllers.RPC;
 

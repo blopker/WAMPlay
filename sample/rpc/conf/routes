@@ -9,4 +9,4 @@ GET     /                           controllers.Application.index()
 GET     /assets/*file               controllers.Assets.at(path="/public", file)
 
 # Send websocket connections to the WAMPlay server
-GET     /rpc                     com.blopker.wamplay.controllers.WAMPlayServer.connect()
+GET     /rpc                     ws.wamplay.controllers.WAMPlayServer.connect()
