@@ -4,13 +4,13 @@ import org.codehaus.jackson.JsonNode;
 
 import play.libs.Json;
 
-import com.blopker.wamplay.annotations.ControllerURIPrefix;
+import com.blopker.wamplay.annotations.URIPrefix;
 import com.blopker.wamplay.annotations.onPublish;
 import com.blopker.wamplay.annotations.onSubscribe;
 import com.blopker.wamplay.controllers.WAMPlayContoller;
 
 // Prefix is optional, but helps remove duplicate code.
-@ControllerURIPrefix("http://example.com/")
+@URIPrefix("http://example.com/")
 public class PubSub extends WAMPlayContoller {
 	static int MAX_MESSAGE_LENGTH = 10;
 	
