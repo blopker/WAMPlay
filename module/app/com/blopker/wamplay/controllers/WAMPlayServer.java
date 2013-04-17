@@ -23,7 +23,7 @@ import com.blopker.wamplay.models.RPC;
 import com.blopker.wamplay.models.WAMPlayClient;
 
 public class WAMPlayServer extends Controller {
-	public static String VERSION = "WAMPlay/0.0.3";
+	public static String VERSION = "WAMPlay/0.0.4";
 	public static int PROTOCOL_VERSION = 1;
 	public static WAMPlayClient lastClient;
 

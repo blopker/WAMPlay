@@ -6,14 +6,10 @@ import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
-
 import org.codehaus.jackson.JsonNode;
-
-import com.blopker.wamplay.models.messages.Message;
 
 import play.Logger;
 import play.Logger.ALogger;
-import play.libs.Json;
 import play.mvc.WebSocket;
 
 public class WAMPlayClient {
