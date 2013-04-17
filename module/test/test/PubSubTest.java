@@ -82,13 +82,13 @@ public class PubSubTest {
 		subscribe(topic, client2);
 
 		publish(topic, client2, true);
-		assertThat(client2.lastMessage().toList().toString()).doesNotContain(
+		assertThat(client2.lastMessage().toString()).doesNotContain(
 				"Hello, WAMP!");
-		assertThat(client.lastMessage().toList().toString()).contains(
+		assertThat(client.lastMessage().toString()).contains(
 				"Hello, WAMP!");
 
 		publish(topic, client2, false);
-		assertThat(client2.lastMessage().toList().toString()).contains(
+		assertThat(client2.lastMessage().toString()).contains(
 				"Hello, WAMP!");
 	}
 
@@ -114,12 +114,12 @@ public class PubSubTest {
 		WAMPlayServer.addTopic(topic, new PubSubCallback() {
 			
 			@Override
-			public void onSubscribe(WAMPlayClient subscribingClient) {
+			public void onSubscribe(String sessionID) {
 				// TODO Auto-generated method stub
 			}
 			
 			@Override
-			public JsonNode onPublish(WAMPlayClient fromClient, JsonNode eventJson) {
+			public JsonNode onPublish(String sessionID, JsonNode eventJson) {
 				if(eventJson.toString().contains("cancel")){
 					cancel();
 				}
@@ -130,10 +130,10 @@ public class PubSubTest {
 		subscribe(topic, client);
 		
 		publish(topic, "cancel this message", client, false);
-		assertThat(client.lastMessage().toList().toString()).doesNotContain("cancel");
+		assertThat(client.lastMessage().toString()).doesNotContain("cancel");
 		
 		publish(topic, "not this message though", client, false);
-		assertThat(client.lastMessage().toList().toString()).contains("message");
+		assertThat(client.lastMessage().toString()).contains("message");
 		
 	}
 	
@@ -147,9 +147,9 @@ public class PubSubTest {
 		subscribe(topic, client);
 		
 		publish(topic, "cancel this message", client, false);
-		assertThat(client.lastMessage().toList().toString()).doesNotContain("cancel");
+		assertThat(client.lastMessage().toString()).doesNotContain("cancel");
 		
 		publish(topic, "not this message though", client, false);
-		assertThat(client.lastMessage().toList().toString()).contains("message");
+		assertThat(client.lastMessage().toString()).contains("message");
 	}
 }

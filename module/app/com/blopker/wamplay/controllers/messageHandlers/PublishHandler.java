@@ -14,7 +14,7 @@ import com.blopker.wamplay.models.messages.Event;
 
 
 public class PublishHandler implements MessageHandler {
-	static ALogger log = Logger.of(PublishHandler.class.getSimpleName());
+	static ALogger log = Logger.of(PublishHandler.class);
 	
 	@Override
 	public void process(WAMPlayClient senderClient, JsonNode message) {
@@ -27,7 +27,7 @@ public class PublishHandler implements MessageHandler {
 			return;
 		}
 		
-		JsonNode event = cb.runPubCallback(senderClient, message.get(2));
+		JsonNode event = cb.runPubCallback(senderClient.getSessionID(), message.get(2));
 		
 		if (cb.isCanceled()) {
 			log.info("Callback for " + topic + " canceled.");
@@ -39,6 +39,8 @@ public class PublishHandler implements MessageHandler {
 			excludeMe = message.get(3).asBoolean(false);
 		}
 
+		JsonNode response = (new Event(topic, event)).toJson();
+		
 		for (WAMPlayClient client : WAMPlayServer.getClients().values()) {
 			if (excludeMe && client.getSessionID().equals(senderClient.getSessionID())) {
 				// Client does not want to get its own event.
@@ -46,7 +48,7 @@ public class PublishHandler implements MessageHandler {
 			}
 			
 			if (client.isSubscribed(topic)) {
-				client.send(new Event(topic, event));
+				client.send(response);
 				log.info("Sent: "  + topic + " to: " + client.getSessionID());
 			}
 		}

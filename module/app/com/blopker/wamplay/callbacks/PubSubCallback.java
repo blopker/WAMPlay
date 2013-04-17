@@ -3,16 +3,14 @@ package com.blopker.wamplay.callbacks;
 
 import org.codehaus.jackson.JsonNode;
 
-import com.blopker.wamplay.models.WAMPlayClient;
-
 public class PubSubCallback {
 	boolean canceled = false;
 	PubCallback pub;
 	SubCallback sub;
 	
-	protected JsonNode onPublish(WAMPlayClient fromClient, JsonNode eventJson){
+	protected JsonNode onPublish(String sessionID, JsonNode eventJson){
 		if (pub != null) {
-			JsonNode node = pub.onPublish(fromClient, eventJson);
+			JsonNode node = pub.onPublish(sessionID, eventJson);
 			if (node == null) {
 				cancel();
 			}
@@ -21,9 +19,9 @@ public class PubSubCallback {
 		return eventJson;
 	}
 	
-	protected void onSubscribe(WAMPlayClient subscribingClient){
+	protected void onSubscribe(String sessionID){
 		if (sub != null) {
-			if (sub.onSubscribe(subscribingClient) == null) {
+			if (sub.onSubscribe(sessionID) == false) {
 				cancel();
 			}
 		}
@@ -37,14 +35,14 @@ public class PubSubCallback {
 		this.pub = pub;
 	}
 	
-	public JsonNode runPubCallback(WAMPlayClient fromClient, JsonNode eventJson) {
+	public JsonNode runPubCallback(String sessionID, JsonNode eventJson) {
 		canceled = false;
-		return onPublish(fromClient, eventJson);
+		return onPublish(sessionID, eventJson);
 	}
 	
-	public void runSubCallback(WAMPlayClient subscribingClient) {
+	public void runSubCallback(String sessionID) {
 		canceled = false;
-		onSubscribe(subscribingClient);
+		onSubscribe(sessionID);
 	}
 	
 	

@@ -22,7 +22,7 @@ public class WAMPlayClient {
 	final Map<String, String> prefixes;
 	final String ID;
 	final WebSocket.Out<JsonNode> out;
-	Message lastSent;
+	JsonNode lastSent;
 
 	public WAMPlayClient(WebSocket.Out<JsonNode> out) {
 		this.out = out;
@@ -31,14 +31,15 @@ public class WAMPlayClient {
 		ID = UUID.randomUUID().toString();
 	}
 
-	public void send(Message message) {
-		if (out == null) { // Just for testing.
-			lastSent = message;
+	public void send(JsonNode response) {
+		// Just for testing.
+		if (out == null) {
+			lastSent = response; 
 			return;
 		}
-		JsonNode node = Json.toJson(message.toList());
+		
 		try {
-			out.write(node);
+			out.write(response);
 		} catch (Exception e) {
 			log.error("Cannot send, client dead!");
 		}
@@ -78,7 +79,7 @@ public class WAMPlayClient {
 		}
 	}
 	
-	public Message lastMessage() {
+	public JsonNode lastMessage() {
 		return lastSent;
 	}
 }

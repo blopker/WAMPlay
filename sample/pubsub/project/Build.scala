@@ -9,11 +9,11 @@ object ApplicationBuild extends Build {
 
   val appDependencies = Seq(
     javaCore,
-    "com.blopker" %% "wamplay" % "0.0.3"
+    "com.blopker" %% "wamplay" % "0.0.4"
   )
 
   val main = play.Project(appName, appVersion, appDependencies).settings(
-    resolvers += Resolver.url("Bo's Repository", url("http://blopker.github.com/releases/"))(Resolver.ivyStylePatterns)
+    resolvers ++= Seq("Bo's Repository" at "http://blopker.github.com/maven-repo/")
   )
 
 }

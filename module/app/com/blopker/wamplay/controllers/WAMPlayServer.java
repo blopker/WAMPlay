@@ -7,7 +7,6 @@ import java.util.concurrent.ConcurrentMap;
 
 import org.codehaus.jackson.JsonNode;
 
-import play.Application;
 import play.Logger;
 import play.Logger.ALogger;
 import play.libs.F.Callback;
@@ -15,15 +14,13 @@ import play.libs.F.Callback0;
 import play.mvc.Controller;
 import play.mvc.WebSocket;
 
-import com.blopker.wamplay.annotations.ControllerURIPrefix;
+import com.blopker.wamplay.annotations.URIPrefix;
 import com.blopker.wamplay.callbacks.PubSubCallback;
 import com.blopker.wamplay.controllers.messageHandlers.HandlerFactory;
 import com.blopker.wamplay.controllers.messageHandlers.MessageHandler;
 import com.blopker.wamplay.models.PubSub;
 import com.blopker.wamplay.models.RPC;
 import com.blopker.wamplay.models.WAMPlayClient;
-import com.blopker.wamplay.models.messages.MessageType;
-import com.blopker.wamplay.models.messages.Welcome;
 
 public class WAMPlayServer extends Controller {
 	public static String VERSION = "WAMPlay/0.0.3";
@@ -63,7 +60,7 @@ public class WAMPlayServer extends Controller {
 						}
 					});
 				}
-				client.send(new Welcome(client.getSessionID()));
+				handleRequest(client, null);
 				lastClient = client;
 			}
 		};
@@ -131,8 +128,8 @@ public class WAMPlayServer extends Controller {
 	
 	public static void addController(WAMPlayContoller controller) {
 		String prefix = "";
-		if (controller.getClass().isAnnotationPresent(ControllerURIPrefix.class)) {
-			prefix = controller.getClass().getAnnotation(ControllerURIPrefix.class).value();
+		if (controller.getClass().isAnnotationPresent(URIPrefix.class)) {
+			prefix = controller.getClass().getAnnotation(URIPrefix.class).value();
 		}
 		
 		PubSub.addController(prefix, controller);	

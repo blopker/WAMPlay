@@ -3,6 +3,7 @@ package com.blopker.wamplay.models.messages;
 import com.blopker.wamplay.controllers.messageHandlers.*;
 
 public enum MessageType {
+	CONNECT(-1, new ConnectHandler()),
 	WELCOME(0, null),
 //	PREFIX(1),
 	CALL(2, new RPCHandler()),

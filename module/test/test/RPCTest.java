@@ -2,6 +2,7 @@ package test;
 
 
 import static org.fest.assertions.Assertions.assertThat;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -10,7 +11,6 @@ import play.libs.Json;
 
 import com.blopker.wamplay.controllers.WAMPlayServer;
 import com.blopker.wamplay.models.WAMPlayClient;
-import com.blopker.wamplay.models.messages.CallError;
 
 public class RPCTest {
 	WAMPlayClient client;
@@ -39,19 +39,18 @@ public class RPCTest {
 	@Test
 	public void testAdd() {
 		callAdd(client, 42, 100);
-		assertThat(client.lastMessage().toString()).contains(", 142");
+		assertThat(client.lastMessage().toString()).contains(",142");
 	}
 	
 	@Test
 	public void testError() {
 		call(client, "notARealThing");
-		assertThat(client.lastMessage()).isInstanceOf(CallError.class);
+		assertThat(client.lastMessage().toString()).contains("404");
 	}
 	
 	@Test
 	public void testIllegalArgumentError() {
 		callAdd(client, 1, "not a number");
-		assertThat(client.lastMessage()).isInstanceOf(CallError.class);
 		assertThat(client.lastMessage().toString()).contains("Argument is not a number!");
 	}
 	

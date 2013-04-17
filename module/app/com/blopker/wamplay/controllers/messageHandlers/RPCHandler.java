@@ -26,13 +26,13 @@ public class RPCHandler implements MessageHandler{
 
 		RPCCallback cb = RPC.getCallback(procURI);
 		if (cb == null) {
-			client.send(new CallError(callID, procURI, "404", "RPC method not found!"));
+			client.send(new CallError(callID, procURI, "404", "RPC method not found!").toJson());
 			return;
 		}
 		
 		try {
-			JsonNode response = cb.call(client, args.toArray(new JsonNode[args.size()]));
-			client.send(new CallResult(callID, response));
+			JsonNode response = cb.call(client.getSessionID(), args.toArray(new JsonNode[args.size()]));
+			client.send(new CallResult(callID, response).toJson());
 		} catch (IllegalArgumentException e) {
 			CallError resp;
 			if (e.getMessage() == null) {
@@ -41,10 +41,10 @@ public class RPCHandler implements MessageHandler{
 				resp = new CallError(callID, procURI, "400", e.getMessage());
 			}
 			System.out.println(resp.toString());
-			client.send(resp);
+			client.send(resp.toJson());
 		} catch (Throwable e) {
 			CallError resp = new CallError(callID, procURI, "500", e.toString());
-			client.send(resp);
+			client.send(resp.toJson());
 		}
 	}
 

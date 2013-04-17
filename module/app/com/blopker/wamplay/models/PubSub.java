@@ -29,9 +29,9 @@ public class PubSub {
 				PubCallback cb = new PubCallback() {
 					
 					@Override
-					protected JsonNode onPublish(WAMPlayClient fromClient, JsonNode eventJson) {
+					protected JsonNode onPublish(String sessionID, JsonNode eventJson) {
 						try {
-							return (JsonNode) method.invoke(null, fromClient, eventJson);
+							return (JsonNode) method.invoke(null, sessionID, eventJson);
 						} catch (IllegalAccessException e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
@@ -53,9 +53,9 @@ public class PubSub {
 				SubCallback cb = new SubCallback() {
 					
 					@Override
-					protected WAMPlayClient onSubscribe(WAMPlayClient subscribingClient) {
+					protected boolean onSubscribe(String sessionID) {
 						try {
-							return (WAMPlayClient) method.invoke(null, subscribingClient);
+							return (boolean) method.invoke(null, sessionID);
 						} catch (IllegalAccessException e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
@@ -66,7 +66,7 @@ public class PubSub {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
 						}
-						return null;
+						return false;
 					}
 				};
 				addTopicCallback(topic, cb);
@@ -96,11 +96,11 @@ public class PubSub {
 		addTopic(topic, new PubSubCallback() {
 			
 			@Override
-			protected void onSubscribe(WAMPlayClient subscribingClient) {
+			protected void onSubscribe(String sessionID) {
 			}
 			
 			@Override
-			protected JsonNode onPublish(WAMPlayClient fromClient, JsonNode eventJson) {
+			protected JsonNode onPublish(String sessionID, JsonNode eventJson) {
 				return eventJson;
 			}
 		});

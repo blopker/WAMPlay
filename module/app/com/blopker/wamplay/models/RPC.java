@@ -28,13 +28,13 @@ public class RPC {
 				procURIs.put(procURI, new RPCCallback() {
 					
 					@Override
-					public JsonNode call(WAMPlayClient client, JsonNode... args) throws Throwable {
+					public JsonNode call(String sessionID, JsonNode... args) throws Throwable {
 						try {
 							if (args.length == 0) {
 								log.debug("No RPC arguments!");
-								return Json.toJson(method.invoke(null, client));
+								return Json.toJson(method.invoke(null, sessionID));
 							}
-							return Json.toJson(method.invoke(null, client, args));
+							return Json.toJson(method.invoke(null, sessionID, args));
 						} catch (InvocationTargetException e) {
 							throw e.getCause();
 						}

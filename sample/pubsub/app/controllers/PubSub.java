@@ -8,7 +8,6 @@ import com.blopker.wamplay.annotations.ControllerURIPrefix;
 import com.blopker.wamplay.annotations.onPublish;
 import com.blopker.wamplay.annotations.onSubscribe;
 import com.blopker.wamplay.controllers.WAMPlayContoller;
-import com.blopker.wamplay.models.WAMPlayClient;
 
 // Prefix is optional, but helps remove duplicate code.
 @ControllerURIPrefix("http://example.com/")
@@ -19,10 +18,10 @@ public class PubSub extends WAMPlayContoller {
 	 * Method that truncates an event message before it's published. 
 	 * @param client WAMP client that sent the event
 	 * @param event Event to be truncated
-	 * @return Modified json event
+	 * @return Modified json event, null to halt publish
 	 */
 	@onPublish("truncate")
-	public static JsonNode truncatePublish(WAMPlayClient client, JsonNode event) {
+	public static JsonNode truncatePublish(String sessionID, JsonNode event) {
 		if (!event.isTextual()) {
 			return cancel();
 		}		
@@ -36,11 +35,10 @@ public class PubSub extends WAMPlayContoller {
 	/**
 	 * Only one onPublish or onSubscribe annotation is necessary to create a topic.
 	 * @param subscribingClient
-	 * @return The client, or a cancel() to stop the client from subscribing.
+	 * @return True if client is allowed to subscribe, false otherwise.
 	 */
 	@onSubscribe("truncate")
-	public static WAMPlayClient capitalSubscribe(WAMPlayClient subscribingClient) {
-		System.out.println(subscribingClient.getID() + " subscribed!");
-		return subscribingClient;
+	public static boolean capitalSubscribe(String sessionID) {
+		return true;
 	}
 }
