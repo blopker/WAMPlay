@@ -21,7 +21,7 @@ public class TestPubSubController extends WAMPlayContoller{
 	}
 	
 	@onPublish("/controller")
-	public static JsonNode capitalPublish(String sessionID, JsonNode eventJson){
+	public JsonNode capitalPublish(String sessionID, JsonNode eventJson){
 		if(eventJson.toString().contains("cancel")){
 			return cancel();
 		}

@@ -32,9 +32,9 @@ public class RPC {
 						try {
 							if (args.length == 0) {
 								log.debug("No RPC arguments!");
-								return Json.toJson(method.invoke(null, sessionID));
+								return Json.toJson(method.invoke(controller, sessionID));
 							}
-							return Json.toJson(method.invoke(null, sessionID, args));
+							return Json.toJson(method.invoke(controller, sessionID, args));
 						} catch (InvocationTargetException e) {
 							throw e.getCause();
 						}

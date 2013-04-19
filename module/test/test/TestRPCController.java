@@ -11,7 +11,7 @@ import ws.wamplay.controllers.WAMPlayContoller;
 public class TestRPCController extends WAMPlayContoller {
 	
 	@onRPC("#meaningOfLife")
-	public static String getMeaningOfLife(String sessionID) {
+	public String getMeaningOfLife(String sessionID) {
 		return "Meaning of life is: 42";
 	}
 	
