@@ -27,6 +27,7 @@ public class RPCTest {
 	public void tearDown() {
 		client.kill();
 		client2.kill();
+		WAMPlayServer.reset();
 	}
 	
 	@Test

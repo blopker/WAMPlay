@@ -121,4 +121,8 @@ public class PubSub {
 		return topics.get(topic);
 	}
 
+	public static void reset() {
+		topics.clear();		
+	}
+
 }

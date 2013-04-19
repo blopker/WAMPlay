@@ -23,6 +23,8 @@ import ws.wamplay.models.WAMPlayClient;
 public class PubSubTest {
 	WAMPlayClient client;
 	WAMPlayClient client2;
+	String SIMPLE = "http://example.com/simple";
+	String HELLO = "Hello, WAMP!";
 
 	@Before
 	public void setUp() {
@@ -34,11 +36,12 @@ public class PubSubTest {
 	public void tearDown() {
 		client.kill();
 		client2.kill();
+		WAMPlayServer.reset();
 	}
 
 	@Test
 	public void subscribeTest() {
-		subscribe("http://example.com/simple", client);
+		subscribe(SIMPLE, client);
 		assertThat(client.isSubscribed("http://example.com/simple")).isTrue();
 
 		subscribe("http://example.com/hello", client);
@@ -55,18 +58,17 @@ public class PubSubTest {
 
 	@Test
 	public void unsubscribeTest() {
-		String topic = "http://example.com/simple";
 
-		assertThat(client.isSubscribed(topic)).isFalse();
-		assertThat(client2.isSubscribed(topic)).isFalse();
+		assertThat(client.isSubscribed(SIMPLE)).isFalse();
+		assertThat(client2.isSubscribed(SIMPLE)).isFalse();
 
-		subscribe(topic, client);
-		assertThat(client.isSubscribed(topic)).isTrue();
-		assertThat(client2.isSubscribed(topic)).isFalse();
+		subscribe(SIMPLE, client);
+		assertThat(client.isSubscribed(SIMPLE)).isTrue();
+		assertThat(client2.isSubscribed(SIMPLE)).isFalse();
 
-		unsubscribe(topic, client);
-		assertThat(client.isSubscribed(topic)).isFalse();
-		assertThat(client2.isSubscribed(topic)).isFalse();
+		unsubscribe(SIMPLE, client);
+		assertThat(client.isSubscribed(SIMPLE)).isFalse();
+		assertThat(client2.isSubscribed(SIMPLE)).isFalse();
 	}
 
 	private void unsubscribe(String topic, WAMPlayClient client) {
@@ -76,35 +78,84 @@ public class PubSubTest {
 
 	@Test
 	public void publishTest() {
-		String topic = "http://example.com/simple";
-		WAMPlayServer.addTopic(topic);
-		subscribe(topic, client);
-		subscribe(topic, client2);
+		WAMPlayServer.addTopic(SIMPLE);
+		subscribe(SIMPLE, client);
+		subscribe(SIMPLE, client2);
 
-		publish(topic, client2, true);
-		assertThat(client2.lastMessage().toString()).doesNotContain(
-				"Hello, WAMP!");
-		assertThat(client.lastMessage().toString()).contains(
-				"Hello, WAMP!");
-
-		publish(topic, client2, false);
+		publishExcludeMe(SIMPLE, HELLO, client2, false);
+		
 		assertThat(client2.lastMessage().toString()).contains(
-				"Hello, WAMP!");
-	}
-
-	private void publish(String topic, WAMPlayClient client, boolean excludeMe) {
-		publish(topic, "Hello, WAMP!", client, excludeMe);
+				HELLO);
+		assertThat(client.lastMessage().toString()).contains(
+				HELLO);
 	}
 	
-	private void publish(String topic, String message, WAMPlayClient client, boolean excludeMe) {
+	@Test
+	public void publishExcludeMeTest() {
+		WAMPlayServer.addTopic(SIMPLE);
+		subscribe(SIMPLE, client);
+		
+		publishExcludeMe(SIMPLE, HELLO, client, true);
+		assertThat(client.lastMessage().toString()).doesNotContain(HELLO);
+	}
+	
+	@Test
+	public void publishExcludeTest() {
+		WAMPlayServer.addTopic(SIMPLE);
+		subscribe(SIMPLE, client);
+		String[] exclude = {client.getSessionID()};
+		publishExclude(SIMPLE, HELLO, client, exclude);
+		
+		assertThat(client.lastMessage().toString()).doesNotContain(HELLO);
+	}
+	
+	@Test
+	public void publishEligibleTest() {
+		WAMPlayServer.addTopic(SIMPLE);
+		subscribe(SIMPLE, client);
+		subscribe(SIMPLE, client2);
+		
+		String[] eligible = {client2.getSessionID()};
+		
+		publishEligible(SIMPLE, HELLO, client, eligible);
+		
+		assertThat(client.lastMessage().toString()).doesNotContain(HELLO);
+		assertThat(client2.lastMessage().toString()).contains(HELLO);
+	}
+	
+	private void publishExcludeMe(String topic, String message, WAMPlayClient client, boolean excludeMe) {
+		List<Object> res = getPublishBeginning(topic, message);
+		if (excludeMe) {
+			res.add(excludeMe);
+		}
+		send(client, res);
+	}
+	
+	private void publishExclude(String topic, String message, WAMPlayClient client, String[] exclude) {
+		List<Object> res = getPublishBeginning(topic, message);
+		res.add(exclude);
+		send(client, res);
+	}
+	
+	private void publishEligible(String topic, String message, WAMPlayClient client, String[] eligible) {
+		List<Object> res = getPublishBeginning(topic, message);
+		res.add(new String[0]);
+		res.add(eligible);
+		send(client, res);
+	}
+	
+	private List<Object> getPublishBeginning(String topic, String message) {
 		List<Object> res = new ArrayList<Object>();
 		res.add(7);
 		res.add(topic);
 		res.add(message);
-		if (excludeMe) {
-			res.add(true);
-		}
+		
+		return res;
+	}
+	
+	private void send(WAMPlayClient client, List<Object> res) {
 		JsonNode req = Json.toJson(res);
+//		System.out.println(req);
 		WAMPlayServer.handleRequest(client, req);
 	}
 
@@ -129,10 +180,10 @@ public class PubSubTest {
 		
 		subscribe(topic, client);
 		
-		publish(topic, "cancel this message", client, false);
+		publishExcludeMe(topic, "cancel this message", client, false);
 		assertThat(client.lastMessage().toString()).doesNotContain("cancel");
 		
-		publish(topic, "not this message though", client, false);
+		publishExcludeMe(topic, "not this message though", client, false);
 		assertThat(client.lastMessage().toString()).contains("message");
 		
 	}
@@ -146,10 +197,10 @@ public class PubSubTest {
 		
 		subscribe(topic, client);
 		
-		publish(topic, "cancel this message", client, false);
+		publishExcludeMe(topic, "cancel this message", client, false);
 		assertThat(client.lastMessage().toString()).doesNotContain("cancel");
 		
-		publish(topic, "not this message though", client, false);
+		publishExcludeMe(topic, "not this message though", client, false);
 		assertThat(client.lastMessage().toString()).contains("message");
 	}
 }

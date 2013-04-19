@@ -1,5 +1,6 @@
 package ws.wamplay.controllers;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -134,5 +135,15 @@ public class WAMPlayServer extends Controller {
 		
 		PubSub.addController(prefix, controller);	
 		RPC.addController(prefix, controller);
+	}
+	
+	public static void reset() {
+		clients.clear();
+		PubSub.reset();
+		RPC.reset();
+	}
+	
+	public static void publish(String topicURI, JsonNode event, Collection<String> exclude, Collection<String> eligible){
+		
 	}
 }

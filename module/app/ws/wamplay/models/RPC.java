@@ -53,4 +53,8 @@ public class RPC {
 		return procURIs.get(procURI);
 	}
 
+	public static void reset() {
+		procURIs.clear();		
+	}
+
 }
