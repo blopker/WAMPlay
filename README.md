@@ -1,6 +1,6 @@
 ![Logo](https://raw.github.com/blopker/WAMPlay/master/wamplay.png)
 
-*If this project helps you, please star it!*
+**If this project helps you, please star it!**
 
 About
 -----
