@@ -136,6 +136,10 @@ public class PubSubTest {
 		
 		assertThat(client.lastMessage().toString()).doesNotContain(HELLO);
 		assertThat(client2.lastMessage().toString()).contains(HELLO);		
+		
+		WAMPlayServer.publish(SIMPLE, Json.toJson(HELLO));
+		assertThat(client.lastMessage().toString()).contains(HELLO);	
+		assertThat(client.lastMessage().isArray()).isTrue();
 	}
 	
 	private void publishExcludeMe(String topic, String message, WAMPlayClient client, boolean excludeMe) {

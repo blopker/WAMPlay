@@ -40,9 +40,7 @@ public class PublishHandler implements MessageHandler {
 		Set<String> exclude = getExcludes(senderClient.getSessionID(), message);
 		Set<String> eligible = getEligible(senderClient.getSessionID(), message);
 		
-		JsonNode response = (new Event(topic, event)).toJson();
-		
-		publish(topic, response, exclude, eligible);
+		publish(topic, event, exclude, eligible);
 
 	}
 	
@@ -97,7 +95,7 @@ public class PublishHandler implements MessageHandler {
 				}
 				
 				if(isEligible(client.getSessionID(), eligible)){
-					client.send(event);
+					client.send(new Event(topicURI, event).toJson());
 					log.info("Sent: "  + topicURI + " to: " + client.getSessionID());
 				}
 			}
