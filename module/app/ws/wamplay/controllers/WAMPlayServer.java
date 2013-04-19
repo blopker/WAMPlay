@@ -84,7 +84,7 @@ public class WAMPlayServer extends Controller {
 		}
 	}
 
-	private static void addClient(WAMPlayClient client) {
+	private static synchronized void addClient(WAMPlayClient client) {
 		Map<String, WAMPlayClient> clientsNew = new HashMap<String, WAMPlayClient>();
 		clientsNew.putAll(clients);
 		clientsNew.put(client.getSessionID(), client);
@@ -92,7 +92,7 @@ public class WAMPlayServer extends Controller {
 		log.debug("WAMPClient: " + client.getSessionID() + " connected.");
 	}
 
-	private static void removeClient(WAMPlayClient client) {
+	private static synchronized void removeClient(WAMPlayClient client) {
 		Map<String, WAMPlayClient> clientsNew = new HashMap<String, WAMPlayClient>();
 		clientsNew.putAll(clients);
 		clientsNew.remove(client.getSessionID());
@@ -179,7 +179,7 @@ public class WAMPlayServer extends Controller {
 	 * Resets WAMPlayServer's state. Removes all controllers, topics, and
 	 * clients.
 	 */
-	public static void reset() {
+	public static synchronized void reset() {
 		clients = Collections
 				.unmodifiableMap(new HashMap<String, WAMPlayClient>());
 		PubSub.reset();
