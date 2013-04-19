@@ -14,7 +14,7 @@ Getting Started
 First add WAMPlay to appDependencies in the [Build.scala](https://github.com/blopker/WAMPlay/blob/master/sample/rpc/project/Build.scala) file:
 
 ```scala
-"ws.wamplay" %% "wamplay" % "0.1.0"
+"ws.wamplay" %% "wamplay" % "0.1.3"
 ```
 
 Then add the WAMPlay repo in the same file:
@@ -60,7 +60,7 @@ public class SampleController extends WAMPlayContoller {
 
 	@onPublish("/chat")
 	public static JsonNode truncatePublish(String sessionID, JsonNode event) {
-		return Json.toJson(message);
+		return Json.toJson(event);
 	}
 }
 ```
