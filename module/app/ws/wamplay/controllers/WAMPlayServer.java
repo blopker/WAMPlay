@@ -1,10 +1,9 @@
 package ws.wamplay.controllers;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentMap;
 
 import org.codehaus.jackson.JsonNode;
 
@@ -18,10 +17,10 @@ import ws.wamplay.annotations.URIPrefix;
 import ws.wamplay.callbacks.PubSubCallback;
 import ws.wamplay.controllers.messageHandlers.HandlerFactory;
 import ws.wamplay.controllers.messageHandlers.MessageHandler;
+import ws.wamplay.controllers.messageHandlers.PublishHandler;
 import ws.wamplay.models.PubSub;
 import ws.wamplay.models.RPC;
 import ws.wamplay.models.WAMPlayClient;
-
 
 public class WAMPlayServer extends Controller {
 	public static String VERSION = "WAMPlay/0.0.4";
@@ -29,8 +28,8 @@ public class WAMPlayServer extends Controller {
 	public static WAMPlayClient lastClient;
 
 	static ALogger log = Logger.of(WAMPlayServer.class);
-	static ConcurrentMap<String, WAMPlayClient> clients = new ConcurrentHashMap<String, WAMPlayClient>();
-
+	static Map<String, WAMPlayClient> clients = Collections
+			.unmodifiableMap(new HashMap<String, WAMPlayClient>());
 
 	/**
 	 * Handle the websocket.
@@ -68,33 +67,45 @@ public class WAMPlayServer extends Controller {
 	}
 
 	/**
-	 * Sends a raw WAMP message to the correct controller. Method is public for easier testing.
-	 * Do not use in your application.
-	 * @param Raw WAMP JSON request.
-	 * @param Originating client.
+	 * Sends a raw WAMP message to the correct controller. Method is public for
+	 * easier testing. Do not use in your application.
+	 * 
+	 * @param Raw
+	 *            WAMP JSON request.
+	 * @param Originating
+	 *            client.
 	 */
 	public static void handleRequest(WAMPlayClient client, JsonNode request) {
-		try{
+		try {
 			MessageHandler handler = HandlerFactory.get(request);
 			handler.process(client, request);
 		} catch (IllegalArgumentException e) {
 			e.printStackTrace();
-		}		
+		}
 	}
 
 	private static void addClient(WAMPlayClient client) {
-		clients.put(client.getSessionID(), client);
+		Map<String, WAMPlayClient> clientsNew = new HashMap<String, WAMPlayClient>();
+		clientsNew.putAll(clients);
+		clientsNew.put(client.getSessionID(), client);
+		clients = Collections.unmodifiableMap(clientsNew);
 		log.debug("WAMPClient: " + client.getSessionID() + " connected.");
 	}
 
 	private static void removeClient(WAMPlayClient client) {
-		clients.remove(client.getSessionID());
+		Map<String, WAMPlayClient> clientsNew = new HashMap<String, WAMPlayClient>();
+		clientsNew.putAll(clients);
+		clientsNew.remove(client.getSessionID());
+		clients = Collections.unmodifiableMap(clientsNew);
 		log.debug("WAMPClient: " + client.getSessionID() + " disconnected.");
 	}
 
 	/**
-	 * Gets a connected client with a ID. Use to interact with a specific client.
-	 * @param Client's ID as a string.
+	 * Gets a connected client with a ID. Can be used to send arbitrary JSON to
+	 * a specific client.
+	 * 
+	 * @param sessionID
+	 *            Client's session ID as a string.
 	 * @return Connected WAMP client. Returns null if there is no client.
 	 */
 	public static WAMPlayClient getClient(String clientID) {
@@ -102,48 +113,114 @@ public class WAMPlayServer extends Controller {
 	}
 
 	/**
-	 * Gets a copy of the map of all the currently connected clients. 
+	 * Gets a copy of the map of all the currently connected clients. This map
+	 * is immutable.
+	 * 
 	 * @return A map of the currently connected WAMP clients.
 	 */
 	public static Map<String, WAMPlayClient> getClients() {
-		Map<String, WAMPlayClient> map = new HashMap<>();
-		map.putAll(clients);
-		return map;
+		return clients;
 	}
 
-	public static PubSubCallback getPubSubCallback(String topic) {
-		return PubSub.getPubSubCallback(topic);
+	/**
+	 * Add a PubSub topic and callbacks for clients to interact with. Topics
+	 * must be specifically added or clients could kill the server by filling it
+	 * up with useless topics. Adding topics through a controller's @onPublish
+	 * or @onSubscribe annotation is the preferred method.
+	 * 
+	 * @param topicURI
+	 * @param pubSubCallback
+	 */
+	public static void addTopic(String topicURI, PubSubCallback pubSubCallback) {
+		PubSub.addTopic(topicURI, pubSubCallback);
 	}
-	
-	public static void addTopic(String topic, PubSubCallback pubSubCallback) {
-		PubSub.addTopic(topic, pubSubCallback);		
+
+	/**
+	 * Remove a topic from the server. Clients will no longer be able to publish
+	 * or subscribe to this topic.
+	 * 
+	 * @param topicURI
+	 */
+	public static void removeTopic(String topicURI) {
+		PubSub.removeTopic(topicURI);
 	}
-	
-	public static void removeTopic(String topic) {
-		PubSub.removeTopic(topic);
+
+	/**
+	 * Add a PubSub topic with no callbacks for clients to interact with. Topics
+	 * must be specifically added or clients could kill the server by filling it
+	 * up with useless topics. Adding topics through a controller's @onPublish
+	 * or @onSubscribe annotation is the preferred method.
+	 * 
+	 * @param topicURI
+	 * @param pubSubCallback
+	 */
+	public static void addTopic(String topicURI) {
+		PubSub.addTopic(topicURI);
 	}
-	
-	public static void addTopic(String topic) {
-		PubSub.addTopic(topic);
-	}
-	
+
+	/**
+	 * Registers a controller for RPC and/or PubSub. Only one onPublish or
+	 * onSubscribe annotation is needed to add a topic.
+	 * 
+	 * @param controller
+	 */
 	public static void addController(WAMPlayContoller controller) {
 		String prefix = "";
 		if (controller.getClass().isAnnotationPresent(URIPrefix.class)) {
-			prefix = controller.getClass().getAnnotation(URIPrefix.class).value();
+			prefix = controller.getClass().getAnnotation(URIPrefix.class)
+					.value();
 		}
-		
-		PubSub.addController(prefix, controller);	
+
+		PubSub.addController(prefix, controller);
 		RPC.addController(prefix, controller);
 	}
-	
+
+	/**
+	 * Resets WAMPlayServer's state. Removes all controllers, topics, and
+	 * clients.
+	 */
 	public static void reset() {
-		clients.clear();
+		clients = Collections
+				.unmodifiableMap(new HashMap<String, WAMPlayClient>());
 		PubSub.reset();
 		RPC.reset();
 	}
-	
-	public static void publish(String topicURI, JsonNode event, Collection<String> exclude, Collection<String> eligible){
-		
+
+	/**
+	 * Publish an event to all clients with sessionIDs not in the exclude
+	 * collection.
+	 * 
+	 * @param topicURI
+	 * @param event
+	 * @param exclude
+	 *            , Collection of sessionIDs to exclude.
+	 */
+	public static void publishExclude(String topicURI, JsonNode event,
+			Collection<String> exclude) {
+		PublishHandler.publish(topicURI, event, exclude, null);
+	}
+
+	/**
+	 * Publish an event to all clients with sessionIDs in the eligible
+	 * collection.
+	 * 
+	 * @param topicURI
+	 * @param event
+	 * @param exclude
+	 *            , Collection of eligible sessionIDs.
+	 */
+	public static void publishEligible(String topicURI, JsonNode event,
+			Collection<String> eligible) {
+		PublishHandler.publish(topicURI, event, null, eligible);
+	}
+
+	/**
+	 * Publish an event to all clients.
+	 * 
+	 * @param topicURI
+	 * @param event
+	 */
+	public static void publish(String topicURI, JsonNode event) {
+		PublishHandler.publish(topicURI, event, null, null);
 	}
 }

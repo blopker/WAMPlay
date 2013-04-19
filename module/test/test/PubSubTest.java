@@ -123,6 +123,21 @@ public class PubSubTest {
 		assertThat(client2.lastMessage().toString()).contains(HELLO);
 	}
 	
+	@Test
+	public void serverPublishTest(){
+		WAMPlayServer.addTopic(SIMPLE);
+		subscribe(SIMPLE, client);
+		subscribe(SIMPLE, client2);
+		
+		List<String> eligible = new ArrayList<String>();
+		eligible.add(client2.getSessionID());
+		
+		WAMPlayServer.publishEligible(SIMPLE, Json.toJson(HELLO), eligible);
+		
+		assertThat(client.lastMessage().toString()).doesNotContain(HELLO);
+		assertThat(client2.lastMessage().toString()).contains(HELLO);		
+	}
+	
 	private void publishExcludeMe(String topic, String message, WAMPlayClient client, boolean excludeMe) {
 		List<Object> res = getPublishBeginning(topic, message);
 		if (excludeMe) {

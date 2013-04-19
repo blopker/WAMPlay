@@ -11,6 +11,7 @@ import play.Logger;
 import play.Logger.ALogger;
 import ws.wamplay.callbacks.PubSubCallback;
 import ws.wamplay.controllers.WAMPlayServer;
+import ws.wamplay.models.PubSub;
 import ws.wamplay.models.WAMPlayClient;
 import ws.wamplay.models.messages.Event;
 
@@ -22,7 +23,7 @@ public class PublishHandler implements MessageHandler {
 	public void process(WAMPlayClient senderClient, JsonNode message) {
 		String topic = message.get(1).asText();
 		
-		PubSubCallback cb = WAMPlayServer.getPubSubCallback(topic);
+		PubSubCallback cb = PubSub.getPubSubCallback(topic);
 		
 		if (cb == null) {
 			log.error("Topic not found: " + topic);
@@ -45,7 +46,7 @@ public class PublishHandler implements MessageHandler {
 
 	}
 	
-	private Set<String> getEligible(String sessionID, JsonNode message) {		
+	private static Set<String> getEligible(String sessionID, JsonNode message) {		
 		if (!message.has(4) || message.get(4).isNull()) {
 			return null;
 		}
@@ -65,7 +66,7 @@ public class PublishHandler implements MessageHandler {
 		return eligible;
 	}
 
-	private Set<String> getExcludes(String sessionID, JsonNode message) {
+	private static Set<String> getExcludes(String sessionID, JsonNode message) {
 		if (!message.has(3) || message.get(3).isNull()) {
 			return null;
 		}
