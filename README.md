@@ -60,7 +60,7 @@ public class SampleController extends WAMPlayContoller {
 
 	@onPublish("/chat")
 	public static JsonNode truncatePublish(String sessionID, JsonNode event) {
-		return Json.toJson(message);
+		return Json.toJson(event);
 	}
 }
 ```
