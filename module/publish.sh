@@ -1,7 +1,18 @@
 #!/usr/bin/env bash
 
-play clean
-play publish
+function test {
+  "$@"
+   status=$?
+   if [ $status -ne 0 ]; then
+     echo "error with $@"
+     exit
+   fi
+   return $status
+}
+
+test play clean
+test play test
+test play publish
 
 cd ~/code
 
