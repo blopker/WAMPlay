@@ -1,10 +1,10 @@
 ![Logo](https://raw.github.com/blopker/WAMPlay/master/wamplay.png)
 
-**If this project helps you, please star it!**
-
 About
 -----
 This is a WAMP implementation for the Play! Framework. Use it to add RPC and Pub/Sub websocket functionality to your site!
+
+**If this project helps you, please star it!**
 
 Getting Started
 ---------------
