@@ -23,7 +23,7 @@ import ws.wamplay.models.RPC;
 import ws.wamplay.models.WAMPlayClient;
 
 public class WAMPlayServer extends Controller {
-	public static String VERSION = "WAMPlay/0.0.4";
+	public static String VERSION = "WAMPlay/0.1.4";
 	public static int PROTOCOL_VERSION = 1;
 	public static WAMPlayClient lastClient;
 
