@@ -159,6 +159,16 @@ public class WAMPlayServer extends Controller {
 	}
 
 	/**
+	 * Checks if topicURI is a valid (subscribable) topic.
+	 * 
+	 * @param topicURI
+	 * @return if the URI points to a valid topic
+	 */
+	public static boolean isTopic(String topicURI) {
+		return PubSub.getPubSubCallback(topicURI) == null ? false : true;
+	}
+
+	/**
 	 * Registers a controller for RPC and/or PubSub. Only one onPublish or
 	 * onSubscribe annotation is needed to add a topic.
 	 * 

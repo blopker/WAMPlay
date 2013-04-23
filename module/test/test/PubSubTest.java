@@ -41,9 +41,12 @@ public class PubSubTest {
 
 	@Test
 	public void subscribeTest() {
+		WAMPlayServer.addTopic(SIMPLE);
+		
 		subscribe(SIMPLE, client);
 		assertThat(client.isSubscribed("http://example.com/simple")).isTrue();
 
+		WAMPlayServer.addTopic("http://example.com/hello");
 		subscribe("http://example.com/hello", client);
 		assertThat(client.isSubscribed("http://example.com/hello")).isTrue();
 
@@ -58,6 +61,7 @@ public class PubSubTest {
 
 	@Test
 	public void unsubscribeTest() {
+		WAMPlayServer.addTopic(SIMPLE);
 
 		assertThat(client.isSubscribed(SIMPLE)).isFalse();
 		assertThat(client2.isSubscribed(SIMPLE)).isFalse();
