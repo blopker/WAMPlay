@@ -14,7 +14,7 @@ Getting Started
 First add WAMPlay to appDependencies in the [Build.scala](https://github.com/blopker/WAMPlay/blob/master/sample/rpc/project/Build.scala) file:
 
 ```scala
-"ws.wamplay" %% "wamplay" % "0.1.4"
+"ws.wamplay" %% "wamplay" % "0.1.6"
 ```
 
 Then add the WAMPlay repo in the same file:
