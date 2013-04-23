@@ -55,7 +55,7 @@ public class PubSub {
 					@Override
 					protected boolean onSubscribe(String sessionID) {
 						try {
-							return (boolean) method.invoke(null, sessionID);
+							return (boolean) method.invoke(controller, sessionID);
 						} catch (IllegalAccessException e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
@@ -93,18 +93,7 @@ public class PubSub {
 
 	public static void addTopic(String topic) {
 		// Just add a topic with no callback functions.
-		addTopic(topic, new PubSubCallback() {
-			
-			@Override
-			protected void onSubscribe(String sessionID) {
-			}
-			
-			@Override
-			protected JsonNode onPublish(String sessionID, JsonNode eventJson) {
-				return eventJson;
-			}
-		});
-		
+		addTopic(topic, new PubSubCallback());
 	}
 
 	public static void addTopic(String topic, PubSubCallback pubSubCallback) {

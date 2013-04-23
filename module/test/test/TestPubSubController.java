@@ -21,7 +21,13 @@ public class TestPubSubController extends WAMPlayContoller{
 	@onSubscribe("/controller")
 	public static boolean capitalSubscribe(String sessionID) {
 		log.info(sessionID + " subscribed!");
+		System.out.println("HELO!");
 		return true;
+	}
+	
+	@onSubscribe("/unsubscribable")
+	public boolean unSubscribable(String sessionID){
+		return false;
 	}
 	
 	@onPublish("/controller")

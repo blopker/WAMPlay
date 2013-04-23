@@ -32,7 +32,7 @@ public class PublishHandler implements MessageHandler {
 		
 		JsonNode event = cb.runPubCallback(senderClient.getSessionID(), message.get(2));
 		
-		if (cb.isCanceled()) {
+		if (event == null) {
 			log.info("Callback for " + topic + " canceled.");
 			return;
 		}

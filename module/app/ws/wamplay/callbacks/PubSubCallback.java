@@ -4,27 +4,21 @@ package ws.wamplay.callbacks;
 import org.codehaus.jackson.JsonNode;
 
 public class PubSubCallback {
-	boolean canceled = false;
 	PubCallback pub;
 	SubCallback sub;
 	
 	protected JsonNode onPublish(String sessionID, JsonNode eventJson){
 		if (pub != null) {
-			JsonNode node = pub.onPublish(sessionID, eventJson);
-			if (node == null) {
-				cancel();
-			}
-			return node;
+			return pub.onPublish(sessionID, eventJson);
 		}
 		return eventJson;
 	}
 	
-	protected void onSubscribe(String sessionID){
+	protected boolean onSubscribe(String sessionID){
 		if (sub != null) {
-			if (sub.onSubscribe(sessionID) == false) {
-				cancel();
-			}
+			return sub.onSubscribe(sessionID);
 		}
+		return true;
 	}
 	
 	public void setSubCallback(SubCallback sub) {
@@ -36,21 +30,10 @@ public class PubSubCallback {
 	}
 	
 	public JsonNode runPubCallback(String sessionID, JsonNode eventJson) {
-		canceled = false;
 		return onPublish(sessionID, eventJson);
 	}
 	
-	public void runSubCallback(String sessionID) {
-		canceled = false;
-		onSubscribe(sessionID);
-	}
-	
-	
-	protected void cancel() {
-		canceled = true;
-	}
-	
-	public boolean isCanceled() {
-		return canceled;
+	public boolean runSubCallback(String sessionID) {
+		return onSubscribe(sessionID);
 	}
 }

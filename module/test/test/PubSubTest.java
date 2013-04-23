@@ -188,14 +188,14 @@ public class PubSubTest {
 		WAMPlayServer.addTopic(topic, new PubSubCallback() {
 			
 			@Override
-			public void onSubscribe(String sessionID) {
-				// TODO Auto-generated method stub
+			public boolean onSubscribe(String sessionID) {
+				return true;
 			}
 			
 			@Override
 			public JsonNode onPublish(String sessionID, JsonNode eventJson) {
 				if(eventJson.toString().contains("cancel")){
-					cancel();
+					return null;
 				}
 				return eventJson;
 			}
@@ -229,5 +229,10 @@ public class PubSubTest {
 		subscribe("example.com/easyTopic", client);
 		publishExcludeMe("example.com/easyTopic", "test easyTopic", client, false);
 		assertThat(client.lastMessage().toString()).contains("test easyTopic");
+		
+		subscribe("example.com/unsubscribable", client);
+		publishExcludeMe("example.com/unsubscribable", "test unsubscribable", client, false);
+		assertThat(client.lastMessage().toString()).doesNotContain("test unsubscribable");
+		
 	}
 }
