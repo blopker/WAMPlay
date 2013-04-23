@@ -152,7 +152,6 @@ public class WAMPlayServer extends Controller {
 	 * or @onSubscribe annotation is the preferred method.
 	 * 
 	 * @param topicURI
-	 * @param pubSubCallback
 	 */
 	public static void addTopic(String topicURI) {
 		PubSub.addTopic(topicURI);

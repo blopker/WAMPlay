@@ -14,6 +14,10 @@ import ws.wamplay.controllers.WAMPlayContoller;
 public class TestPubSubController extends WAMPlayContoller{
 	static ALogger log = Logger.of(WAMPlayContoller.class);
 	
+	public TestPubSubController() {
+		this.addTopic("/easyTopic");
+	}
+	
 	@onSubscribe("/controller")
 	public static boolean capitalSubscribe(String sessionID) {
 		log.info(sessionID + " subscribed!");

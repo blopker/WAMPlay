@@ -225,5 +225,9 @@ public class PubSubTest {
 		
 		publishExcludeMe(topic, "not this message though", client, false);
 		assertThat(client.lastMessage().toString()).contains("message");
+		
+		subscribe("example.com/easyTopic", client);
+		publishExcludeMe("example.com/easyTopic", "test easyTopic", client, false);
+		assertThat(client.lastMessage().toString()).contains("test easyTopic");
 	}
 }
