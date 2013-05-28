@@ -41,7 +41,6 @@ public class RPCHandler implements MessageHandler{
 			} else {
 				resp = new CallError(callID, procURI, "400", e.getMessage());
 			}
-			System.out.println(resp.toString());
 			client.send(resp.toJson());
 		} catch (Throwable e) {
 			CallError resp = new CallError(callID, procURI, "500", e.toString());

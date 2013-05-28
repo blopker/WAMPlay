@@ -178,7 +178,6 @@ public class PubSubTest {
 	
 	private void send(WAMPlayClient client, List<Object> res) {
 		JsonNode req = Json.toJson(res);
-//		System.out.println(req);
 		WAMPlayServer.handleRequest(client, req);
 	}
 

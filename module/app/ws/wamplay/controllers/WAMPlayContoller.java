@@ -20,7 +20,6 @@ public class WAMPlayContoller {
 		if (prefix != null) {
 			topicSuffix = prefix.value() + topicSuffix;
 		}
-		System.out.println("adding" + topicSuffix);
 		WAMPlayServer.addTopic(topicSuffix);
 	}
 	
@@ -39,7 +38,6 @@ public class WAMPlayContoller {
 		if (prefix != null) {
 			topicSuffix = prefix.value() + topicSuffix;
 		}
-		System.out.println("adding" + topicSuffix);
 		WAMPlayServer.addTopic(topicSuffix, cb);
 	}
 
