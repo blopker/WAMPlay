@@ -29,7 +29,7 @@ public class SubscribeHandler implements MessageHandler {
 		boolean sucessful = cb.runSubCallback(senderClient.getSessionID());
 		
 		if (!sucessful) {
-			log.info("Callback for " + topic + " canceled.");
+			log.debug("Callback for " + topic + " canceled.");
 			return;
 		}
 		

@@ -33,7 +33,7 @@ public class PublishHandler implements MessageHandler {
 		JsonNode event = cb.runPubCallback(senderClient.getSessionID(), message.get(2));
 		
 		if (event == null) {
-			log.info("Callback for " + topic + " canceled.");
+			log.debug("Callback for " + topic + " canceled.");
 			return;
 		}
 		
@@ -96,7 +96,7 @@ public class PublishHandler implements MessageHandler {
 				
 				if(isEligible(client.getSessionID(), eligible)){
 					client.send(new Event(topicURI, event).toJson());
-					log.info("Sent: "  + topicURI + " to: " + client.getSessionID());
+					log.debug("Sent: "  + topicURI + " to: " + client.getSessionID());
 				}
 			}
 		}
