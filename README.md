@@ -85,7 +85,10 @@ Now head over to the [RPC Sample Index](https://github.com/blopker/WAMPlay/blob/
 Limitations
 -----------
 - No support for prefix messages
+- This is currently in beta state, there may be bugs and the API may change
 
-**This is currently in beta state, there may be bugs and the API may change**
-
+Samples
+-------
 Check out the [samples](https://github.com/blopker/WAMPlay/tree/master/sample) to see how to include WAMPlay in your app!
+
+WAMPlay was made in conjunction with [Pheme](https://github.com/blopker/Pheme). You should look [here](https://github.com/blopker/Pheme/blob/master/app/controllers/Socket.java) for realworld example usage.
