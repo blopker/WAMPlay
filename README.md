@@ -91,4 +91,4 @@ Samples
 -------
 Check out the [samples](https://github.com/blopker/WAMPlay/tree/master/sample) to see how to include WAMPlay in your app!
 
-WAMPlay was made in conjunction with [Pheme](https://github.com/blopker/Pheme). You should look [here](https://github.com/blopker/Pheme/blob/master/app/controllers/Socket.java) for real-world example usage.
+WAMPlay was made in conjunction with [Pheme](https://github.com/blopker/Pheme). You should look [here](https://github.com/blopker/Pheme/blob/master/app/controllers/Socket.java) for a real-world example.
