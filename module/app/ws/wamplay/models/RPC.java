@@ -5,7 +5,7 @@ import java.lang.reflect.Method;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
-import org.codehaus.jackson.JsonNode;
+import com.fasterxml.jackson.databind.JsonNode;
 
 import play.Logger;
 import play.Logger.ALogger;
@@ -26,7 +26,7 @@ public class RPC {
 				String procURI = prefix
 						+ method.getAnnotation(onRPC.class).value();
 				procURIs.put(procURI, new RPCCallback() {
-					
+
 					@Override
 					public JsonNode call(String sessionID, JsonNode... args) throws Throwable {
 						try {
@@ -48,13 +48,13 @@ public class RPC {
 	public static void addCallback(String procURI, RPCCallback cb) {
 		procURIs.put(procURI, cb);
 	}
-	
+
 	public static RPCCallback getCallback(String procURI) {
 		return procURIs.get(procURI);
 	}
 
 	public static void reset() {
-		procURIs.clear();		
+		procURIs.clear();
 	}
 
 }

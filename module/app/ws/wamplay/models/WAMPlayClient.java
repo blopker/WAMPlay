@@ -6,7 +6,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
-import org.codehaus.jackson.JsonNode;
+import com.fasterxml.jackson.databind.JsonNode;
 
 import play.Logger;
 import play.Logger.ALogger;
@@ -30,10 +30,10 @@ public class WAMPlayClient {
 	public void send(JsonNode response) {
 		// Just for testing.
 		if (out == null) {
-			lastSent = response; 
+			lastSent = response;
 			return;
 		}
-		
+
 		try {
 			out.write(response);
 		} catch (Exception e) {
@@ -68,13 +68,13 @@ public class WAMPlayClient {
 	public String getSessionID() {
 		return this.ID;
 	}
-	
+
 	public void kill() {
 		if (out != null) {
-			out.close();	
+			out.close();
 		}
 	}
-	
+
 	public JsonNode lastMessage() {
 		return lastSent;
 	}

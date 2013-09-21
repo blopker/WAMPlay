@@ -5,7 +5,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.codehaus.jackson.JsonNode;
+import com.fasterxml.jackson.databind.JsonNode;
 
 import play.Logger;
 import play.Logger.ALogger;
@@ -69,7 +69,7 @@ public class WAMPlayServer extends Controller {
 	/**
 	 * Sends a raw WAMP message to the correct controller. Method is public for
 	 * easier testing. Do not use in your application.
-	 * 
+	 *
 	 * @param Raw
 	 *            WAMP JSON request.
 	 * @param Originating
@@ -103,7 +103,7 @@ public class WAMPlayServer extends Controller {
 	/**
 	 * Gets a connected client with a ID. Can be used to send arbitrary JSON to
 	 * a specific client.
-	 * 
+	 *
 	 * @param sessionID
 	 *            Client's session ID as a string.
 	 * @return Connected WAMP client. Returns null if there is no client.
@@ -115,7 +115,7 @@ public class WAMPlayServer extends Controller {
 	/**
 	 * Gets a copy of the map of all the currently connected clients. This map
 	 * is immutable.
-	 * 
+	 *
 	 * @return A map of the currently connected WAMP clients.
 	 */
 	public static Map<String, WAMPlayClient> getClients() {
@@ -127,7 +127,7 @@ public class WAMPlayServer extends Controller {
 	 * must be specifically added or clients could kill the server by filling it
 	 * up with useless topics. Adding topics through a controller's @onPublish
 	 * or @onSubscribe annotation is the preferred method.
-	 * 
+	 *
 	 * @param topicURI
 	 * @param pubSubCallback
 	 */
@@ -138,7 +138,7 @@ public class WAMPlayServer extends Controller {
 	/**
 	 * Remove a topic from the server. Clients will no longer be able to publish
 	 * or subscribe to this topic.
-	 * 
+	 *
 	 * @param topicURI
 	 */
 	public static void removeTopic(String topicURI) {
@@ -150,7 +150,7 @@ public class WAMPlayServer extends Controller {
 	 * must be specifically added or clients could kill the server by filling it
 	 * up with useless topics. Adding topics through a controller's @onPublish
 	 * or @onSubscribe annotation is the preferred method.
-	 * 
+	 *
 	 * @param topicURI
 	 */
 	public static void addTopic(String topicURI) {
@@ -159,7 +159,7 @@ public class WAMPlayServer extends Controller {
 
 	/**
 	 * Checks if topicURI is a valid (subscribable) topic.
-	 * 
+	 *
 	 * @param topicURI
 	 * @return if the URI points to a valid topic
 	 */
@@ -170,7 +170,7 @@ public class WAMPlayServer extends Controller {
 	/**
 	 * Registers a controller for RPC and/or PubSub. Only one onPublish or
 	 * onSubscribe annotation is needed to add a topic.
-	 * 
+	 *
 	 * @param controller
 	 */
 	public static void addController(WAMPlayContoller controller) {
@@ -198,7 +198,7 @@ public class WAMPlayServer extends Controller {
 	/**
 	 * Publish an event to all clients with sessionIDs not in the exclude
 	 * collection.
-	 * 
+	 *
 	 * @param topicURI
 	 * @param event
 	 * @param exclude
@@ -212,7 +212,7 @@ public class WAMPlayServer extends Controller {
 	/**
 	 * Publish an event to all clients with sessionIDs in the eligible
 	 * collection.
-	 * 
+	 *
 	 * @param topicURI
 	 * @param event
 	 * @param exclude
@@ -225,7 +225,7 @@ public class WAMPlayServer extends Controller {
 
 	/**
 	 * Publish an event to all clients.
-	 * 
+	 *
 	 * @param topicURI
 	 * @param event
 	 */

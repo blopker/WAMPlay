@@ -1,7 +1,7 @@
 package ws.wamplay.controllers.messageHandlers;
 
 
-import org.codehaus.jackson.JsonNode;
+import com.fasterxml.jackson.databind.JsonNode;
 
 import ws.wamplay.models.WAMPlayClient;
 

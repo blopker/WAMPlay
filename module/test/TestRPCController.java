@@ -1,6 +1,6 @@
 package test;
 
-import org.codehaus.jackson.JsonNode;
+import com.fasterxml.jackson.databind.JsonNode;
 
 import ws.wamplay.annotations.URIPrefix;
 import ws.wamplay.annotations.onRPC;
@@ -9,12 +9,12 @@ import ws.wamplay.controllers.WAMPlayContoller;
 
 @URIPrefix("test")
 public class TestRPCController extends WAMPlayContoller {
-	
+
 	@onRPC("#meaningOfLife")
 	public String getMeaningOfLife(String sessionID) {
 		return "Meaning of life is: 42";
 	}
-	
+
 	@onRPC("#add")
 	public static int add(String sessionID, JsonNode... args){
 		int ans = 0;

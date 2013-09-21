@@ -3,7 +3,7 @@ package ws.wamplay.controllers.messageHandlers;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.codehaus.jackson.JsonNode;
+import com.fasterxml.jackson.databind.JsonNode;
 
 import ws.wamplay.callbacks.RPCCallback;
 import ws.wamplay.models.RPC;
@@ -18,9 +18,9 @@ public class RPCHandler implements MessageHandler{
 	public void process(WAMPlayClient client, JsonNode message) {
 		String callID = message.get(1).asText();
 		String procURI = message.get(2).asText();
-		
+
 		List<JsonNode> args = new ArrayList<JsonNode>();
-		
+
 		for (int i = 3; i < message.size(); i++) {
 			args.add(message.get(i));
 		}
@@ -30,7 +30,7 @@ public class RPCHandler implements MessageHandler{
 			client.send(new CallError(callID, procURI, "404", "RPC method not found!").toJson());
 			return;
 		}
-		
+
 		try {
 			JsonNode response = cb.call(client.getSessionID(), args.toArray(new JsonNode[args.size()]));
 			client.send(new CallResult(callID, response).toJson());

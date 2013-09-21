@@ -5,7 +5,7 @@ import java.lang.reflect.Method;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
-import org.codehaus.jackson.JsonNode;
+import com.fasterxml.jackson.databind.JsonNode;
 
 import play.Logger;
 import play.Logger.ALogger;
@@ -22,12 +22,12 @@ public class PubSub {
 	static ConcurrentMap<String, PubSubCallback> topics = new ConcurrentHashMap<String, PubSubCallback>();
 
 	public static void addController(String prefix, final WAMPlayContoller controller) {
-		
+
 		for (final Method method : controller.getClass().getMethods()) {
 			if (method.isAnnotationPresent(onPublish.class)) {
 				String topic = prefix + method.getAnnotation(onPublish.class).value();
 				PubCallback cb = new PubCallback() {
-					
+
 					@Override
 					protected JsonNode onPublish(String sessionID, JsonNode eventJson) {
 						try {
@@ -47,11 +47,11 @@ public class PubSub {
 				};
 				addTopicCallback(topic, cb);
 			}
-			
+
 			if (method.isAnnotationPresent(onSubscribe.class)) {
 				String topic = prefix + method.getAnnotation(onSubscribe.class).value();
 				SubCallback cb = new SubCallback() {
-					
+
 					@Override
 					protected boolean onSubscribe(String sessionID) {
 						try {
@@ -79,9 +79,9 @@ public class PubSub {
 	}
 
 	private static void addTopicCallback(String topic, SubCallback cb) {
-		createOrGet(topic).setSubCallback(cb);		
+		createOrGet(topic).setSubCallback(cb);
 	}
-	
+
 	private static PubSubCallback createOrGet(String topic) {
 		PubSubCallback pub = topics.get(topic);
 		if (pub == null) {
@@ -98,12 +98,12 @@ public class PubSub {
 
 	public static void addTopic(String topic, PubSubCallback pubSubCallback) {
 		topics.put(topic, pubSubCallback);
-		
+
 	}
 
 	public static void removeTopic(String topic) {
 		topics.remove(topic);
-		
+
 	}
 
 	public static PubSubCallback getPubSubCallback(String topic) {
@@ -111,7 +111,7 @@ public class PubSub {
 	}
 
 	public static void reset() {
-		topics.clear();		
+		topics.clear();
 	}
 
 }
