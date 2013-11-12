@@ -11,4 +11,4 @@ libraryDependencies ++= Seq(
 
 playJavaSettings
 
-resolvers += "Local Play Repository" at "file://D:\\Dev\\Play\\play-2.2.1\\repository\\local"
+//resolvers += "Local Play Repository" at "file://D:\\Dev\\Play\\play-2.2.1\\repository\\local"
