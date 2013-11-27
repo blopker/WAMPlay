@@ -55,7 +55,7 @@ public class PubSub {
 					@Override
 					protected boolean onSubscribe(String sessionID) {
 						try {
-							return (boolean) method.invoke(controller, sessionID);
+							return (Boolean) method.invoke(controller, sessionID);
 						} catch (IllegalAccessException e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
