@@ -19,6 +19,7 @@ public class WAMPlayClient {
 	final String ID;
 	final WebSocket.Out<JsonNode> out;
 	JsonNode lastSent;
+    public Object obj; //for additional to client
 
 	public WAMPlayClient(WebSocket.Out<JsonNode> out) {
 		this.out = out;

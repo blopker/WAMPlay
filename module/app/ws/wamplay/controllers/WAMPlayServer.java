@@ -15,12 +15,14 @@ import play.mvc.Controller;
 import play.mvc.WebSocket;
 import ws.wamplay.annotations.URIPrefix;
 import ws.wamplay.callbacks.PubSubCallback;
+import ws.wamplay.callbacks.DisconnectCallback;
 import ws.wamplay.controllers.messageHandlers.HandlerFactory;
 import ws.wamplay.controllers.messageHandlers.MessageHandler;
 import ws.wamplay.controllers.messageHandlers.PublishHandler;
 import ws.wamplay.models.PubSub;
 import ws.wamplay.models.RPC;
 import ws.wamplay.models.WAMPlayClient;
+import ws.wamplay.models.Disconnect;
 
 public class WAMPlayServer extends Controller {
 	public static String VERSION = "WAMPlay/0.1.6";
@@ -48,6 +50,8 @@ public class WAMPlayServer extends Controller {
 
 						@Override
 						public void invoke() throws Throwable {
+                            DisconnectCallback cb = Disconnect.getCallback();
+                            if (cb != null) cb.onDisconnect(client);
 							WAMPlayServer.removeClient(client);
 						}
 					});
@@ -182,6 +186,7 @@ public class WAMPlayServer extends Controller {
 
 		PubSub.addController(prefix, controller);
 		RPC.addController(prefix, controller);
+        Disconnect.addController(controller);
 	}
 
 	/**
