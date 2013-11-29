@@ -2,8 +2,10 @@ package ws.wamplay.models;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentMap;
+//import java.util.concurrent.ConcurrentHashMap;
+//import java.util.concurrent.ConcurrentMap;
+import java.util.List;
+import java.util.ArrayList;
 
 import com.fasterxml.jackson.databind.JsonNode;
 
@@ -12,12 +14,13 @@ import play.Logger.ALogger;
 import ws.wamplay.annotations.onDisconnect;
 import ws.wamplay.callbacks.DisconnectCallback;
 import ws.wamplay.controllers.WAMPlayContoller;
+import ws.wamplay.models.WAMPlayClient;
 
 
 public class Disconnect {
 	static ALogger log = Logger.of(Disconnect.class.getSimpleName());
-	//static ConcurrentMap<String, DisconnectCallback> callbacks = new ConcurrentHashMap<String, DisconnectCallback>();
     static DisconnectCallback cb;
+    static List<DisconnectCallback> callbacks = new ArrayList<DisconnectCallback>();
 
 
 	public static void addController(final WAMPlayContoller controller) {
@@ -42,14 +45,23 @@ public class Disconnect {
 						}
 					}
 				};
-				//addCallback(cb);
-                break;
+				addCallback(cb);
 			}
 
 		}
 	}
 
-	public static DisconnectCallback getCallback() {
+	protected static void addCallback(DisconnectCallback aCallback) {
+        callbacks.add(aCallback);
+    }
+
+    public static void call(WAMPlayClient client) {
+        for (final DisconnectCallback cb: callbacks) {
+            if (cb != null) cb.onDisconnect(client);
+        }
+    }
+
+    public static DisconnectCallback getCallback() {
 		return cb;
 	}
 

@@ -50,8 +50,7 @@ public class WAMPlayServer extends Controller {
 
 						@Override
 						public void invoke() throws Throwable {
-                            DisconnectCallback cb = Disconnect.getCallback();
-                            if (cb != null) cb.onDisconnect(client);
+                           Disconnect.call(client);
 							WAMPlayServer.removeClient(client);
 						}
 					});
