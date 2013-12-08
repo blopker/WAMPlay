@@ -1,6 +1,6 @@
 package controllers;
 
-import org.codehaus.jackson.JsonNode;
+import com.fasterxml.jackson.core.JsonNode;
 
 import play.libs.Json;
 
