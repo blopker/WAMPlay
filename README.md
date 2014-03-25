@@ -1,3 +1,6 @@
+**This project is no longer being maintained. Thank you for your support. If you want to maintain it let me know and I'll add you as a contributor. Or it's MIT so you can fork it!**
+
+
 ![Logo](https://raw.github.com/blopker/WAMPlay/master/wamplay.png)
 
 About
